@@ -46,7 +46,7 @@ namespace SLG_ExcelToJson
                 {
                     if (usedRange.Cells[row, col] != null && usedRange.Cells[row, col].Value != null)
                     {
-                        dataTypeNames.Add(usedRange.Cells[row, col].Value.ToString());
+                        dataTypeNames.Add(usedRange.Cells[row, col].Value.ToString());                       
                     }
                 }
 
@@ -90,6 +90,11 @@ namespace SLG_ExcelToJson
                         value = DataTypeChanger.GetValue(type, usedRange.Cells[row, col].Value);
                         Console.WriteLine("{0}", value);
                         valList.Add(value);
+                    }
+                    else
+                    {
+                        //Console.WriteLine("{0}", value);
+                        valList.Add(null);
                     }
                 }
                 rtnList.Add(valList);

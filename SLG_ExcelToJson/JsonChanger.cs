@@ -18,10 +18,12 @@ namespace SLG_ExcelToJson
             JObject obj = new JObject();
             for (int i = 0; i < nameList.Count; i++)
             {
+                if (i >= valList.Count)
+                    break;
                 obj.Add(nameList[i], valList[i]);
             }
             return obj;
-        }
+        } 
 
         public static JArray ChangeToJArray(List<string> nameList, List<List<dynamic>> valList)
         {
