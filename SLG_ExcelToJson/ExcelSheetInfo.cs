@@ -75,6 +75,8 @@ namespace SLG_ExcelToJson
 
         public List<List<dynamic>> GetSheetValues()
         {
+            // NULL 시트 체크 ID 값이 비어 있다면 NULL
+            bool nullCheck = false;
             List<List<dynamic>> rtnList = new List<List<dynamic>>();
             for (int row = 3; row <= usedRange.Rows.Count; row++)
             {
@@ -93,10 +95,18 @@ namespace SLG_ExcelToJson
                     }
                     else
                     {
+                        if (col == 1)
+                        {
+                            nullCheck = true;
+                            break;
+                        }
                         //Console.WriteLine("{0}", value);
                         valList.Add(null);
                     }
                 }
+                if (nullCheck)
+                    break;
+
                 rtnList.Add(valList);
             }
             return rtnList;
