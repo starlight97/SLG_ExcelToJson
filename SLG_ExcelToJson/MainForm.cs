@@ -87,7 +87,9 @@ namespace SLG_ExcelToJson
             foreach(var info in ExcelReader.InfoList)
             {
                 var fileManager = new FileManager();
-                fileManager.FileFullPath = currentDirectory + info.ExcelSheet.Name.ToLower() + "_data";
+                fileManager.FilePath = currentDirectory;
+                //fileManager.FileFullPath = currentDirectory + info.ExcelSheet.Name + "_data";
+                fileManager.FileName = info.ExcelSheet.Name + "_data";
                 fileManager.NewFileExtension = ".json";
                 Console.WriteLine("fileManager.FileFullPath : "  + fileManager.FileFullPath);
                 FileManagerList.Add(fileManager);
@@ -99,7 +101,7 @@ namespace SLG_ExcelToJson
             for (int i = 0; i < allSheetsValues.Count; i++)
             {
                 string sheetText = JsonChanger.ChangToJArrayToString(ExcelReader.InfoList[i].DataNames, allSheetsValues[i]);
-                FileManagerList[i].SaveNewFile(sheetText);
+                FileManagerList[i].SaveNewFile_Temp(sheetText);
 
                 //cs파일 생성
                 ClassMaker maker = new ClassMaker(FileManagerList[i].NewFilePath, FileManagerList[i].NewFileName);

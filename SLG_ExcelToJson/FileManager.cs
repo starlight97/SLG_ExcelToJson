@@ -12,6 +12,7 @@ namespace SLG_ExcelToJson
         //파일의 경로만.
         private string @filePath;
         private string @fileName;
+        private string @originFileName;
 
         public string @FilePath
         {
@@ -37,6 +38,11 @@ namespace SLG_ExcelToJson
                     NewFileName = value.Contains('.') ? value.Substring(0, value.LastIndexOf('.')) : value;
             }
         }
+        public string @OriginFileName
+        {
+            get { return originFileName; }
+        }
+
         public string @FileFullPath
         {
             get { return filePath + '\\' + fileName; }
@@ -154,6 +160,11 @@ namespace SLG_ExcelToJson
         public void SaveNewFile(string text)
         {
             File.WriteAllText(NewFileFullPath, text);
+        }
+        // 임시
+        public void SaveNewFile_Temp(string text)
+        {
+            File.WriteAllText(newFilePath + @"\" + newFileName.ToLower(), text);
         }
 
         public bool NewFileExist()
