@@ -87,7 +87,7 @@ namespace SLG_ExcelToJson
             foreach(var info in ExcelReader.InfoList)
             {
                 var fileManager = new FileManager();
-                fileManager.FileFullPath = currentDirectory + info.ExcelSheet.Name;
+                fileManager.FileFullPath = currentDirectory + info.ExcelSheet.Name.ToLower() + "_data";
                 fileManager.NewFileExtension = ".json";
                 Console.WriteLine("fileManager.FileFullPath : "  + fileManager.FileFullPath);
                 FileManagerList.Add(fileManager);
