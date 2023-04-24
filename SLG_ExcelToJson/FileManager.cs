@@ -164,7 +164,7 @@ namespace SLG_ExcelToJson
         // 임시
         public void SaveNewFile_Temp(string text)
         {
-            File.WriteAllText(newFilePath + @"\" + newFileName.ToLower(), text);
+            File.WriteAllText(newFilePath + "\\json" + @"\" + newFileName.ToLower(), text);
         }
 
         public bool NewFileExist()

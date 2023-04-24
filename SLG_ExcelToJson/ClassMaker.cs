@@ -67,7 +67,7 @@ namespace SLG_ExcelToJson
             fileName = fileName.Replace("_", "");
             fileName = fileName.Replace("data.", "Data.");
             fileName = fileName.Replace(".json", ".cs");
-            fileFullName = filePath + "\\"+ fileName;
+            fileFullName = filePath + "\\cs\\"+ fileName;
         }
 
         public void AddField(List<string> fieldName, List<TypeCode> typeCodes)

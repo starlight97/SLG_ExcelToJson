@@ -72,6 +72,17 @@ namespace SLG_ExcelToJson
         {
             ResultTextBox.Text = "변환 시작!!! 로딩중.....";
 
+            if (Directory.Exists(currentDirectory + "\\json") == false)
+            {
+                Directory.CreateDirectory(currentDirectory + "\\json");
+            }
+            if (Directory.Exists(currentDirectory + "\\cs") == false)
+            {
+                Directory.CreateDirectory(currentDirectory + "\\cs");
+            }
+
+            ErrorManager.instance.Init();
+
             //if (lbxExcelList.SelectedItems.Count < 1)
             //{
             //    MessageBox.Show("변환할 파일이 없습니다.", "아이고...", MessageBoxButtons.OK,
@@ -111,6 +122,11 @@ namespace SLG_ExcelToJson
             }
             FileManagerList.Clear();
             ExcelReader.Free();
+
+            if(ErrorManager.instance.ErrorLogs.Count > 0)
+            {
+                ErrorManager.instance.Show();
+            }
 
             ResultTextBox.Text = "변환이 완료되었습니다!!!";
             Process.Start(currentDirectory);

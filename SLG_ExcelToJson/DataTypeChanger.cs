@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.ComponentModel;
-using System.Runtime;
 
 namespace SLG_ExcelToJson
 {
@@ -115,7 +114,17 @@ namespace SLG_ExcelToJson
 
             else
             {
-                return Convert.ChangeType(value, typeCode);
+                try
+                {
+                    return Convert.ChangeType(value, typeCode);
+                }
+                catch (Exception e)
+                {
+                    ErrorManager.instance.AddErrorLog($"ERROR : {value} {typeCode}");
+                    return null;
+                }
+
+                
             }
         }
 

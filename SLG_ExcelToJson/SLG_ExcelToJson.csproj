@@ -74,6 +74,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="ClassMaker.cs" />
     <Compile Include="DataTypeChanger.cs" />
     <Compile Include="ExcelReader.cs" />
