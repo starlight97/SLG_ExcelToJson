@@ -33,8 +33,6 @@ namespace SLG_ExcelToJson
             excelPaths = new List<string>();
 
             InitializeComponent();
-
-
         }
 
         private void MainForm_Load(object sender, EventArgs e)
