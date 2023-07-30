@@ -54,7 +54,7 @@ namespace SLG_ExcelToJson
                 foreach (string type in dataTypeNames)
                 {
                     dataTypeCodes.Add(DataTypeChanger.GetTypeCodeByDescription(type));
-                    Console.WriteLine("{0}", DataTypeChanger.GetTypeCodeByDescription(type));
+                    //Console.WriteLine("{0}", DataTypeChanger.GetTypeCodeByDescription(type));
                 }
 
                 //밸류들 자동으로 뽑아줌.
@@ -90,7 +90,7 @@ namespace SLG_ExcelToJson
 
                         TypeCode type = this.dataTypeCodes[col - 1];
                         value = DataTypeChanger.GetValue(type, usedRange.Cells[row, col].Value);
-                        Console.WriteLine("{0}", value);
+                        //Console.WriteLine("test : value : {0}", value);
                         valList.Add(value);
                     }
                     else

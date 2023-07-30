@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SLG_ExcelToJson
 {
@@ -21,6 +23,7 @@ namespace SLG_ExcelToJson
         private List<string> excelPaths;
         private string currentDirectory;
         private string currentFileName;
+        private string currentFileFullPath;
 
 
         public MainForm()
@@ -93,33 +96,50 @@ namespace SLG_ExcelToJson
             //
 
             ExcelReader.Init();
-            ExcelReader.AddExcelFile(currentFileName);
+            ExcelReader.AddExcelFile(currentFileFullPath);
 
-            foreach(var info in ExcelReader.InfoList)
+            Dictionary<string, JArray> temp = new Dictionary<string, JArray>();
+            foreach (var info in ExcelReader.InfoList)
             {
-                var fileManager = new FileManager();
-                fileManager.FilePath = currentDirectory;
-                //fileManager.FileFullPath = currentDirectory + info.ExcelSheet.Name + "_data";
-                fileManager.FileName = info.ExcelSheet.Name + "_data";
-                fileManager.NewFileExtension = ".json";
-                Console.WriteLine("fileManager.FileFullPath : "  + fileManager.FileFullPath);
-                FileManagerList.Add(fileManager);
+                JArray jArray = new JArray();
+                JObject jObj = new JObject();
 
+                // 데이터 타입 ex(int , string)
+                jObj = ChangeToJObject(info.DataNames, info.DataTypeNames);
+                jArray.Add(jObj); 
+
+                // 데이터 값 ex(1, "홍길동")
+                foreach (var values in info.DataValues)
+                {
+                    var jobj = ChangeToJObject(info.DataNames, values);
+                    if (jobj != null)
+                        jArray.Add(jobj);
+                }
+
+                temp.Add(info.ExcelSheet.Name, jArray);
             }
 
-            //엑셀파일 저장.
-            var allSheetsValues = ExcelReader.GetAllSheetValues();
-            for (int i = 0; i < allSheetsValues.Count; i++)
-            {
-                string sheetText = JsonChanger.ChangToJArrayToString(ExcelReader.InfoList[i].DataNames, allSheetsValues[i]);
-                FileManagerList[i].SaveNewFile_Temp(sheetText);
+            string json = JsonConvert.SerializeObject(temp);
+            File.WriteAllText($"{currentDirectory + currentFileName}.json", json);
 
-                //cs파일 생성
-                ClassMaker maker = new ClassMaker(FileManagerList[i].NewFilePath, FileManagerList[i].NewFileName);
-                maker.AddField(ExcelReader.InfoList[i].DataNames, ExcelReader.InfoList[i].DataTypeCodes);
-                maker.GenerateCSharpCode();
 
-            }
+            //// json 여러개로 뽑을때 사용
+            //// 엑셀파일 저장.
+            //var allSheetsValues = ExcelReader.GetAllSheetValues();
+            //for (int i = 0; i < allSheetsValues.Count; i++)
+            //{
+            //    JsonChanger.ChangToJArrayToString(ExcelReader.InfoList[i].DataNames, allSheetsValues[i]);
+            //    string sheetText = JsonChanger.ChangToJArrayToString(ExcelReader.InfoList[i].DataNames, allSheetsValues[i]);
+
+            //    FileManagerList[i].SaveNewFile_Temp(sheetText);
+
+            //    // cs파일 생성
+            //    ClassMaker maker = new ClassMaker(FileManagerList[i].NewFilePath, FileManagerList[i].NewFileName);
+            //    maker.AddField(ExcelReader.InfoList[i].DataNames, ExcelReader.InfoList[i].DataTypeCodes);
+            //    maker.GenerateCSharpCode();
+            //}
+
+
             FileManagerList.Clear();
             ExcelReader.Free();
 
@@ -142,9 +162,41 @@ namespace SLG_ExcelToJson
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 txtSysMsg.Text = dialog.FileName;
-                currentFileName = dialog.FileName;
-                currentDirectory = Path.GetDirectoryName(currentFileName) + "\\";
+                currentFileFullPath = dialog.FileName;
+                currentDirectory = Path.GetDirectoryName(currentFileFullPath) + "\\";
+                currentFileName = Path.GetFileNameWithoutExtension(currentFileFullPath);
             }
         }
+
+        public JObject ChangeToJObject(List<string> nameList, List<dynamic> valList)
+        {
+            if (valList.Count == 0)
+                return null;
+
+            JObject obj = new JObject();
+            for (int i = 0; i < nameList.Count; i++)
+            {
+                if (i >= valList.Count)
+                    break;
+                obj.Add(nameList[i], valList[i]);
+            }
+            return obj;
+        }
+
+        public JObject ChangeToJObject(List<string> nameList, List<string> valList)
+        {
+            if (valList.Count == 0)
+                return null;
+
+            JObject obj = new JObject();
+            for (int i = 0; i < nameList.Count; i++)
+            {
+                if (i >= valList.Count)
+                    break;
+                obj.Add(nameList[i], valList[i]);
+            }
+            return obj;
+        }
+
     }
 }

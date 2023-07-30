@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Excel;
+using System;
 
 namespace SLG_ExcelToJson
 {
@@ -36,11 +37,11 @@ namespace SLG_ExcelToJson
             }
         }
 
-        public static void AddExcelFiles(string[] filePaths)
-        {
-            foreach (string path in filePaths)
-                AddExcelFile(path);
-        }
+        //public static void AddExcelFiles(string[] filePaths)
+        //{
+        //    foreach (string path in filePaths)
+        //        AddExcelFile(path);
+        //}
 
         public static List<List<List<dynamic>>> GetAllSheetValues()
         {
