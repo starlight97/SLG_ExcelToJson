@@ -73,14 +73,14 @@ namespace SLG_ExcelToJson
         {
             ResultTextBox.Text = "변환 시작!!! 로딩중.....";
 
-            if (Directory.Exists(currentDirectory + "\\json") == false)
-            {
-                Directory.CreateDirectory(currentDirectory + "\\json");
-            }
-            if (Directory.Exists(currentDirectory + "\\cs") == false)
-            {
-                Directory.CreateDirectory(currentDirectory + "\\cs");
-            }
+            //if (Directory.Exists(currentDirectory + "\\json") == false)
+            //{
+            //    Directory.CreateDirectory(currentDirectory + "\\json");
+            //}
+            //if (Directory.Exists(currentDirectory + "\\cs") == false)
+            //{
+            //    Directory.CreateDirectory(currentDirectory + "\\cs");
+            //}
 
             ErrorManager.instance.Init();
 
