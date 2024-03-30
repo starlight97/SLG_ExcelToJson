@@ -35,6 +35,7 @@
             this.txtSysMsg = new System.Windows.Forms.TextBox();
             this.ResultTextBox = new System.Windows.Forms.TextBox();
             this.Btn_FileSelected = new MetroFramework.Controls.MetroButton();
+            this.metroButton1 = new MetroFramework.Controls.MetroButton();
             this.SuspendLayout();
             // 
             // MyText
@@ -52,10 +53,10 @@
             this.mbtConvert.BackColor = System.Drawing.Color.Black;
             this.mbtConvert.FontSize = MetroFramework.MetroButtonSize.Tall;
             this.mbtConvert.ForeColor = System.Drawing.Color.White;
-            this.mbtConvert.Location = new System.Drawing.Point(138, 201);
+            this.mbtConvert.Location = new System.Drawing.Point(194, 201);
             this.mbtConvert.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.mbtConvert.Name = "mbtConvert";
-            this.mbtConvert.Size = new System.Drawing.Size(100, 65);
+            this.mbtConvert.Size = new System.Drawing.Size(79, 65);
             this.mbtConvert.TabIndex = 13;
             this.mbtConvert.Text = "변환";
             this.mbtConvert.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -67,7 +68,7 @@
             // 
             this.mbtDirectoryOpen.FontSize = MetroFramework.MetroButtonSize.Tall;
             this.mbtDirectoryOpen.ForeColor = System.Drawing.Color.White;
-            this.mbtDirectoryOpen.Location = new System.Drawing.Point(14, 201);
+            this.mbtDirectoryOpen.Location = new System.Drawing.Point(258, 48);
             this.mbtDirectoryOpen.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.mbtDirectoryOpen.Name = "mbtDirectoryOpen";
             this.mbtDirectoryOpen.Size = new System.Drawing.Size(100, 65);
@@ -83,10 +84,10 @@
             // 
             this.mbtClose.FontSize = MetroFramework.MetroButtonSize.Tall;
             this.mbtClose.ForeColor = System.Drawing.Color.White;
-            this.mbtClose.Location = new System.Drawing.Point(258, 201);
+            this.mbtClose.Location = new System.Drawing.Point(279, 201);
             this.mbtClose.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.mbtClose.Name = "mbtClose";
-            this.mbtClose.Size = new System.Drawing.Size(100, 65);
+            this.mbtClose.Size = new System.Drawing.Size(79, 65);
             this.mbtClose.TabIndex = 13;
             this.mbtClose.Text = "종료";
             this.mbtClose.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -122,13 +123,28 @@
             this.Btn_FileSelected.Location = new System.Drawing.Point(14, 201);
             this.Btn_FileSelected.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Btn_FileSelected.Name = "Btn_FileSelected";
-            this.Btn_FileSelected.Size = new System.Drawing.Size(100, 65);
+            this.Btn_FileSelected.Size = new System.Drawing.Size(79, 65);
             this.Btn_FileSelected.TabIndex = 18;
             this.Btn_FileSelected.Text = "파일 선택";
             this.Btn_FileSelected.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Btn_FileSelected.UseCustomForeColor = true;
             this.Btn_FileSelected.UseSelectable = true;
             this.Btn_FileSelected.Click += new System.EventHandler(this.Btn_FileSelected_Click);
+            // 
+            // metroButton1
+            // 
+            this.metroButton1.FontSize = MetroFramework.MetroButtonSize.Tall;
+            this.metroButton1.ForeColor = System.Drawing.Color.White;
+            this.metroButton1.Location = new System.Drawing.Point(99, 201);
+            this.metroButton1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.metroButton1.Name = "metroButton1";
+            this.metroButton1.Size = new System.Drawing.Size(79, 65);
+            this.metroButton1.TabIndex = 19;
+            this.metroButton1.Text = "저장 위치";
+            this.metroButton1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroButton1.UseCustomForeColor = true;
+            this.metroButton1.UseSelectable = true;
+            this.metroButton1.Click += new System.EventHandler(this.metroButton1_Click);
             // 
             // MainForm
             // 
@@ -137,6 +153,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(382, 351);
+            this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.Btn_FileSelected);
             this.Controls.Add(this.txtSysMsg);
             this.Controls.Add(this.mbtClose);
@@ -164,6 +181,7 @@
         private System.Windows.Forms.TextBox txtSysMsg;
         private System.Windows.Forms.TextBox ResultTextBox;
         private MetroFramework.Controls.MetroButton Btn_FileSelected;
+        private MetroFramework.Controls.MetroButton metroButton1;
     }
 }
 

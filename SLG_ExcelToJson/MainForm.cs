@@ -25,6 +25,7 @@ namespace SLG_ExcelToJson
         private string currentFileName;
         private string currentFileFullPath;
 
+        private string saveTargetDirectory = string.Empty;
 
         public MainForm()
         {
@@ -37,11 +38,41 @@ namespace SLG_ExcelToJson
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            string[] settingValue = File.ReadAllLines("settings.txt");
 
+            foreach (var value in settingValue)
+            {
+            }
+
+            for(int index=0; index < settingValue.Count(); index++)
+            {
+                if (settingValue[index] == string.Empty)
+                    continue;
+
+                if(index == 0)
+                {
+                    currentFileFullPath = settingValue[0]; // 첫 번째 줄은 currentFileFullPath
+                    txtSysMsg.Text = currentFileFullPath;
+                    currentDirectory = Path.GetDirectoryName(currentFileFullPath) + "\\";
+                    currentFileName = Path.GetFileNameWithoutExtension(currentFileFullPath);
+                }
+
+                if(index == 1)
+                {
+                    saveTargetDirectory = settingValue[1]; // 두 번째 줄은 saveTargetDirectory
+                }
+            }          
         }
 
         private void mbtClose_Click(object sender, EventArgs e)
         {
+            string targetFilePath = currentFileFullPath;
+            string targetSaveDirectoryPath = saveTargetDirectory;
+
+            string settingValue = targetFilePath + "\r\n";
+            settingValue += targetSaveDirectoryPath + "\r\n";
+            File.WriteAllText($"settings.txt", settingValue);
+
             Application.Exit();
         }
 
@@ -93,6 +124,21 @@ namespace SLG_ExcelToJson
             //}
             //
 
+            if (currentFileFullPath == null)
+            {
+                MessageBox.Show("변환할 파일이 없습니다.", "아이고...", MessageBoxButtons.OK,MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+                ResultTextBox.Text = "변환 준비중...";
+                return;
+            }
+
+            if(File.Exists(currentFileFullPath) == false)
+            {
+                MessageBox.Show("변환할 파일이 없습니다.", "아이고...", MessageBoxButtons.OK,MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+                ResultTextBox.Text = "변환 준비중...";
+                return;
+            }
+
+
             ExcelReader.Init();
             ExcelReader.AddExcelFile(currentFileFullPath);
 
@@ -118,7 +164,12 @@ namespace SLG_ExcelToJson
             }
 
             string json = JsonConvert.SerializeObject(temp);
-            File.WriteAllText($"{currentDirectory + currentFileName}.json", json);
+
+
+            if (Directory.Exists(saveTargetDirectory) == false)
+                saveTargetDirectory = currentDirectory;
+
+            File.WriteAllText($"{saveTargetDirectory + currentFileName}.json", json);
 
 
             //// json 여러개로 뽑을때 사용
@@ -147,7 +198,7 @@ namespace SLG_ExcelToJson
             }
 
             ResultTextBox.Text = "변환이 완료되었습니다!!!";
-            Process.Start(currentDirectory);
+            Process.Start(saveTargetDirectory);
         }
 
 
@@ -196,5 +247,15 @@ namespace SLG_ExcelToJson
             return obj;
         }
 
+        private void metroButton1_Click(object sender, EventArgs e)
+        {
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true; // true : 폴더 선택 / false : 파일 선택
+
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                saveTargetDirectory = dialog.FileName +"\\";
+            }
+        }
     }
 }
