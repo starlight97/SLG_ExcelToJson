@@ -150,15 +150,17 @@ namespace SLG_ExcelToJson
 
                 // 데이터 타입 ex(int , string)
                 jObj = ChangeToJObject(info.DataNames, info.DataTypeNames);
-                jArray.Add(jObj); 
+                jArray.Add(jObj);
 
                 // 데이터 값 ex(1, "홍길동")
                 foreach (var values in info.DataValues)
                 {
-                    var jobj = ChangeToJObject(info.DataNames, values);
+
+                    var jobj = ChangeToJObject(info.DataNames, values, info.data);
                     if (jobj != null)
                         jArray.Add(jobj);
                 }
+
 
                 temp.Add(info.ExcelSheet.Name, jArray);
             }
@@ -217,7 +219,7 @@ namespace SLG_ExcelToJson
             }
         }
 
-        public JObject ChangeToJObject(List<string> nameList, List<dynamic> valList)
+        public JObject ChangeToJObject(List<string> nameList, List<dynamic> valList, List<string> typeList)
         {
             if (valList.Count == 0)
                 return null;
@@ -227,7 +229,31 @@ namespace SLG_ExcelToJson
             {
                 if (i >= valList.Count)
                     break;
-                obj.Add(nameList[i], valList[i]);
+
+                var value = valList[i];
+
+                if (typeList[i] == "IntArray")
+                {
+                    string[] dataArray = value.Split(',');
+                    JArray dataList = new JArray();
+                    foreach (var data in dataArray)
+                    {
+                        dataList.Add(int.Parse(data));
+                    }
+                    value = dataList;
+                }
+                if (typeList[i] == "StringArray")
+                {
+                    string[] dataArray = value.Split(',');
+                    JArray dataList = new JArray();
+                    foreach (var data in dataArray)
+                    {
+                        dataList.Add(data);
+                    }
+                    value = dataList;
+                }
+
+                obj.Add(nameList[i], value);
             }
             return obj;
         }
