@@ -156,7 +156,7 @@ namespace SLG_ExcelToJson
                 foreach (var values in info.DataValues)
                 {
 
-                    var jobj = ChangeToJObject(info.DataNames, values, info.data);
+                    var jobj = ChangeToJObject(info.DataNames, values, info.DataTypeNames);
                     if (jobj != null)
                         jArray.Add(jobj);
                 }
@@ -242,6 +242,18 @@ namespace SLG_ExcelToJson
                     }
                     value = dataList;
                 }
+
+                if (typeList[i] == "FloatArray")
+                {
+                    string[] dataArray = value.Split(',');
+                    JArray dataList = new JArray();
+                    foreach (var data in dataArray)
+                    {
+                        dataList.Add(float.Parse(data));
+                    }
+                    value = dataList;
+                }
+
                 if (typeList[i] == "StringArray")
                 {
                     string[] dataArray = value.Split(',');
