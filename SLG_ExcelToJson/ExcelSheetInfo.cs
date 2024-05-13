@@ -46,7 +46,16 @@ namespace SLG_ExcelToJson
                 {
                     if (usedRange.Cells[row, col] != null && usedRange.Cells[row, col].Value != null)
                     {
-                        dataTypeNames.Add(usedRange.Cells[row, col].Value.ToString());                       
+                        string typeName = usedRange.Cells[row, col].Value.ToString();
+
+                        if(typeName == "Int" || typeName == "Long" || typeName == "Float"
+                            || typeName == "Double" || typeName == "Char" || typeName == "String"
+                            || typeName == "Bool")
+                        {
+                            typeName = typeName.ToLower();
+                        }
+
+                        dataTypeNames.Add(typeName);                       
                     }
                 }
 

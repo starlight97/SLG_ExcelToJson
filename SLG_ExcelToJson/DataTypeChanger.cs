@@ -95,16 +95,16 @@ namespace SLG_ExcelToJson
 
         public static TypeCode GetTypeCodeByDescription(string desc)
         {
-        //eDataType의 값을 모두 돌며 Descript값 확인.
-        foreach (var eVal in typeof(eDataType).GetEnumValues())
-        {
-            FieldInfo field = typeof(eDataType).GetField(eVal.ToString());
-            DescriptionAttribute att = (DescriptionAttribute)field.GetCustomAttribute(typeof(DescriptionAttribute), false);
-            if (att.Description == desc)
-                return (TypeCode)eVal;
-        }
-        //없다면 모두 String으로 보겠음.
-        return TypeCode.String;
+            //eDataType의 값을 모두 돌며 Descript값 확인.
+            foreach (var eVal in typeof(eDataType).GetEnumValues())
+            {
+                FieldInfo field = typeof(eDataType).GetField(eVal.ToString());
+                DescriptionAttribute att = (DescriptionAttribute)field.GetCustomAttribute(typeof(DescriptionAttribute), false);
+                if (att.Description == desc)
+                    return (TypeCode)eVal;
+            }
+            //없다면 모두 String으로 보겠음.
+            return TypeCode.String;
         }
 
         public static dynamic GetValue(TypeCode typeCode, dynamic value)
