@@ -38,13 +38,17 @@ namespace SLG_ExcelToJson
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            string fileName = "settings.txt";
+            // 파일이 존재하는지 확인
+            if (!File.Exists(fileName))
+            {
+                // 파일이 없는 경우에는 새로운 파일을 생성
+                CreateSettingsFile(fileName);
+            }
             string[] settingValue = File.ReadAllLines("settings.txt");
 
-            foreach (var value in settingValue)
-            {
-            }
 
-            for(int index=0; index < settingValue.Count(); index++)
+            for (int index=0; index < settingValue.Count(); index++)
             {
                 if (settingValue[index] == string.Empty)
                     continue;
@@ -294,6 +298,16 @@ namespace SLG_ExcelToJson
             {
                 saveTargetDirectory = dialog.FileName +"\\";
             }
+        }
+
+        private void CreateSettingsFile(string fileName)
+        {
+            // 설정값 예시
+            //string[] defaultSettings = { "Setting1=Value1", "Setting2=Value2", "Setting3=Value3" };
+            string[] defaultSettings = { "" };
+
+            // 파일에 기본 설정값 작성
+            File.WriteAllLines("settings.txt", defaultSettings);
         }
     }
 }
