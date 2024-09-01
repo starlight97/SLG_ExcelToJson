@@ -12,6 +12,7 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Windows.Media;
 
 namespace SLG_ExcelToJson
 {
@@ -235,8 +236,9 @@ namespace SLG_ExcelToJson
                     break;
 
                 var value = valList[i];
+                var valueType = typeList[i];
 
-                if (typeList[i] == "IntArray")
+                if (valueType == "IntArray")
                 {
                     string[] dataArray = value.Split(',');
                     JArray dataList = new JArray();
@@ -247,7 +249,7 @@ namespace SLG_ExcelToJson
                     value = dataList;
                 }
 
-                if (typeList[i] == "FloatArray")
+                if (valueType == "FloatArray")
                 {
                     string[] dataArray = value.Split(',');
                     JArray dataList = new JArray();
@@ -258,7 +260,7 @@ namespace SLG_ExcelToJson
                     value = dataList;
                 }
 
-                if (typeList[i] == "StringArray")
+                if (valueType == "StringArray")
                 {
                     string[] dataArray = value.Split(',');
                     JArray dataList = new JArray();
@@ -268,6 +270,9 @@ namespace SLG_ExcelToJson
                     }
                     value = dataList;
                 }
+
+                if (value == null)
+                    value = GetDefaultValue(valueType);
 
                 obj.Add(nameList[i], value);
             }
@@ -308,6 +313,25 @@ namespace SLG_ExcelToJson
 
             // 파일에 기본 설정값 작성
             File.WriteAllLines("settings.txt", defaultSettings);
+        }
+
+        private static object GetDefaultValue(string typeName)
+        {
+            switch (typeName.ToLower())
+            {
+                case "int":
+                    return default(int);
+                case "float":
+                    return default(float);
+                case "double":
+                    return default(double);
+                case "bool":
+                    return default(bool);
+                case "string":
+                    return default(string);
+                default:
+                    return null;
+            }
         }
     }
 }
