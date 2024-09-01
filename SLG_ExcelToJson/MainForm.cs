@@ -328,7 +328,7 @@ namespace SLG_ExcelToJson
                 case "bool":
                     return default(bool);
                 case "string":
-                    return default(string);
+                    return "";
                 default:
                     return null;
             }
