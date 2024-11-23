@@ -166,7 +166,7 @@
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(8, 78, 8, 10);
-            this.Text = "ExcelToJson2.0";
+            this.Text = "ExcelToJson2.1";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -13,6 +13,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Windows.Media;
+using System.Reflection;
 
 namespace SLG_ExcelToJson
 {
@@ -39,7 +40,8 @@ namespace SLG_ExcelToJson
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            string fileName = "settings.txt";
+            string basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var fileName = "settings.txt";
             // 파일이 존재하는지 확인
             if (!File.Exists(fileName))
             {
@@ -312,7 +314,7 @@ namespace SLG_ExcelToJson
             string[] defaultSettings = { "" };
 
             // 파일에 기본 설정값 작성
-            File.WriteAllLines("settings.txt", defaultSettings);
+            File.WriteAllLines(fileName, defaultSettings);
         }
 
         private static object GetDefaultValue(string typeName)
