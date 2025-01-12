@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Windows.Media;
 using System.Reflection;
 
 namespace SLG_ExcelToJson
@@ -239,42 +233,15 @@ namespace SLG_ExcelToJson
 
                 var value = valList[i];
                 var valueType = typeList[i];
-
-                if (valueType == "IntArray")
-                {
-                    string[] dataArray = value.Split(',');
-                    JArray dataList = new JArray();
-                    foreach (var data in dataArray)
-                    {
-                        dataList.Add(int.Parse(data));
-                    }
-                    value = dataList;
-                }
-
-                if (valueType == "FloatArray")
-                {
-                    string[] dataArray = value.Split(',');
-                    JArray dataList = new JArray();
-                    foreach (var data in dataArray)
-                    {
-                        dataList.Add(float.Parse(data));
-                    }
-                    value = dataList;
-                }
-
-                if (valueType == "StringArray")
-                {
-                    string[] dataArray = value.Split(',');
-                    JArray dataList = new JArray();
-                    foreach (var data in dataArray)
-                    {
-                        dataList.Add(data);
-                    }
-                    value = dataList;
-                }
-
                 if (value == null)
                     value = GetDefaultValue(valueType);
+
+                if (IsArray(valueType))
+                {
+                    var dataList = new JArray();
+                    SetArrayData(dataList, valueType, value);
+                    value = dataList;
+                }
 
                 obj.Add(nameList[i], value);
             }
@@ -333,6 +300,50 @@ namespace SLG_ExcelToJson
                     return "";
                 default:
                     return null;
+            }
+        }
+
+        private static void SetArrayData(JArray dataList, string typeName, dynamic value)
+        {
+            if (value == "" || value == null)
+                return;
+            
+            var dataArray = value.Split(',');
+            foreach (var data in dataArray)
+            {
+                switch (typeName.ToLower())
+                {
+                    case "intarray":
+                        dataList.Add(int.Parse(data));
+                        break;
+                    case "floatarray":
+                        dataList.Add(float.Parse(data));
+                        break;
+                    case "doublearray":
+                        dataList.Add(double.Parse(data));
+                        break;
+                    case "boolarray":
+                        dataList.Add(bool.Parse(data));
+                        break;
+                    case "stringarray":
+                        dataList.Add(data);
+                        break;
+                }
+            }
+        }
+
+        private static bool IsArray(string typeName)
+        {
+            switch (typeName.ToLower())
+            {
+                case "intarray":
+                case "floatarray":
+                case "doublearray":
+                case "boolarray":
+                case "stringarray":
+                    return true;
+                default:
+                    return false;
             }
         }
     }
