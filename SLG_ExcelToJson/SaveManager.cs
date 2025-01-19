@@ -49,33 +49,11 @@ namespace SLG_ExcelToJson
                     fileManager.FileName = fileName;
                     fileManager.NewFileName =fileName;
                     fileManager.SaveNewFile(json);
-                    FileManagerList.Add(fileManager);
                     // cs파일 생성
                     // ClassMaker maker = new ClassMaker(FileManagerList[i].NewFilePath, FileManagerList[i].NewFileName);
                     // maker.AddField(ExcelReader.InfoList[i].DataNames, ExcelReader.InfoList[i].DataTypeCodes);
                     // maker.GenerateCSharpCode();
                 }
-
-                var allSheetsValues = ExcelReader.GetAllSheetValues();
-                for (int i = 0; i < allSheetsValues.Count; i++)
-                {
-                    /*
-                    var json = string.Empty;
-                    var sheetText = JsonChanger.ChangToJArrayToString(ExcelReader.InfoList[i].DataNames, allSheetsValues[i]);
-
-                    var sheetName = ExcelReader.InfoList[i].ExcelSheet.Name;
-                    var filePath = Path.Combine(_saveTargetDirectory, $"{sheetName}Data.json");
-                    var fileManager = new FileManager(filePath);
-                    fileManager.FileName = sheetName;
-                    fileManager.NewFileName = $"{sheetName}Data.json";
-                    fileManager.SaveNewFile(sheetText);
-                    FileManagerList.Add(fileManager);
-                    */
-                    // FileManagerList[i] = fileManager;
-                    
-                    // FileManagerList[i].SaveNewFile_Temp(sheetText);
-                }
-                FileManagerList.Clear();
             }
             else
             {
