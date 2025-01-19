@@ -16,6 +16,7 @@ namespace SLG_ExcelToJson
         public List<FileManager> FileManagerList;
 
 
+        private SaveManager _saveManager;
         private List<string> excelPaths;
         private string currentDirectory;
         private string currentFileName;
@@ -26,6 +27,7 @@ namespace SLG_ExcelToJson
         public MainForm()
         {
             FileManagerList = new List<FileManager>();
+            _saveManager = new SaveManager();
 
             excelPaths = new List<string>();
 
@@ -125,58 +127,41 @@ namespace SLG_ExcelToJson
             //}
             //
 
-            if (currentFileFullPath == null)
+            if (currentFileFullPath == null || File.Exists(currentFileFullPath) == false)
             {
                 MessageBox.Show("변환할 파일이 없습니다.", "아이고...", MessageBoxButtons.OK,MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
                 ResultTextBox.Text = "변환 준비중...";
                 return;
             }
-
-            if(File.Exists(currentFileFullPath) == false)
-            {
-                MessageBox.Show("변환할 파일이 없습니다.", "아이고...", MessageBoxButtons.OK,MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
-                ResultTextBox.Text = "변환 준비중...";
-                return;
-            }
-
 
             ExcelReader.Init();
             ExcelReader.AddExcelFile(currentFileFullPath);
+            
+            _saveManager.Init(saveTargetDirectory);
+            _saveManager.Save(ExcelReader.InfoList, false);
+            // var dataDic = new Dictionary<string, JArray>();
+            // foreach (var info in ExcelReader.InfoList)
+            // {
+            //     var jArray = new JArray();
+            //     var jObj = new JObject();
+            //
+            //     // 데이터 타입 ex(int , string)
+            //     jObj = ChangeToJObject(info.DataNames, info.DataTypeNames);
+            //     jArray.Add(jObj);
+            //
+            //     // 데이터 값 ex(1, "홍길동")
+            //     foreach (var values in info.DataValues)
+            //     {
+            //         var jobj = ChangeToJObject(info.DataNames, values, info.DataTypeNames);
+            //         if (jobj != null)
+            //             jArray.Add(jobj);
+            //     }
+            //     dataDic.Add(info.ExcelSheet.Name, jArray);
+            // }
+            
 
-            Dictionary<string, JArray> temp = new Dictionary<string, JArray>();
-            foreach (var info in ExcelReader.InfoList)
-            {
-                JArray jArray = new JArray();
-                JObject jObj = new JObject();
-
-                // 데이터 타입 ex(int , string)
-                jObj = ChangeToJObject(info.DataNames, info.DataTypeNames);
-                jArray.Add(jObj);
-
-                // 데이터 값 ex(1, "홍길동")
-                foreach (var values in info.DataValues)
-                {
-
-                    var jobj = ChangeToJObject(info.DataNames, values, info.DataTypeNames);
-                    if (jobj != null)
-                        jArray.Add(jobj);
-                }
-
-
-                temp.Add(info.ExcelSheet.Name, jArray);
-            }
-
-            string json = JsonConvert.SerializeObject(temp);
-
-
-            if (Directory.Exists(saveTargetDirectory) == false)
-                saveTargetDirectory = currentDirectory;
-
-            File.WriteAllText($"{saveTargetDirectory + currentFileName}.json", json);
-
-
-            //// json 여러개로 뽑을때 사용
-            //// 엑셀파일 저장.
+            // json 여러개로 뽑을때 사용
+            // 엑셀파일 저장.
             //var allSheetsValues = ExcelReader.GetAllSheetValues();
             //for (int i = 0; i < allSheetsValues.Count; i++)
             //{
@@ -219,49 +204,7 @@ namespace SLG_ExcelToJson
                 currentFileName = Path.GetFileNameWithoutExtension(currentFileFullPath);
             }
         }
-
-        public JObject ChangeToJObject(List<string> nameList, List<dynamic> valList, List<string> typeList)
-        {
-            if (valList.Count == 0)
-                return null;
-
-            JObject obj = new JObject();
-            for (int i = 0; i < nameList.Count; i++)
-            {
-                if (i >= valList.Count)
-                    break;
-
-                var value = valList[i];
-                var valueType = typeList[i];
-                if (value == null)
-                    value = GetDefaultValue(valueType);
-
-                if (IsArray(valueType))
-                {
-                    var dataList = new JArray();
-                    SetArrayData(dataList, valueType, value);
-                    value = dataList;
-                }
-
-                obj.Add(nameList[i], value);
-            }
-            return obj;
-        }
-
-        public JObject ChangeToJObject(List<string> nameList, List<string> valList)
-        {
-            if (valList.Count == 0)
-                return null;
-
-            JObject obj = new JObject();
-            for (int i = 0; i < nameList.Count; i++)
-            {
-                if (i >= valList.Count)
-                    break;
-                obj.Add(nameList[i], valList[i]);
-            }
-            return obj;
-        }
+        
 
         private void metroButton1_Click(object sender, EventArgs e)
         {
