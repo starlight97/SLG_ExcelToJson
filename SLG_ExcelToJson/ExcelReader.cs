@@ -33,7 +33,23 @@ namespace SLG_ExcelToJson
             {
                 ExcelSheetInfo info = new ExcelSheetInfo();
                 InfoList.Add(info);
-                info.ExcelSheet = ExcelSheets.Item[i];
+
+                try
+                {
+                    info.ExcelSheet = ExcelSheets.Item[i];
+                }
+                catch (Exception e)
+                {
+                    var msg = "Json Convert Error\r\n";
+                    foreach (var dataName in info.DataNames)
+                    {
+                        msg += dataName + "\r\n";
+                    }
+                    
+                    ErrorManager.instance.AddErrorLog(msg);
+                    ErrorManager.instance.Show();
+                    throw;
+                }
             }
         }
 

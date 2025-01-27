@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.IO;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Reflection;
 
@@ -54,15 +53,16 @@ namespace SLG_ExcelToJson
 
                 if(index == 0)
                 {
-                    currentFileFullPath = settingValue[0]; // 첫 번째 줄은 currentFileFullPath
+                    currentFileFullPath = Path.GetFullPath(settingValue[0]); // 첫 번째 줄은 currentFileFullPath
                     txtSysMsg.Text = currentFileFullPath;
                     currentDirectory = Path.GetDirectoryName(currentFileFullPath) + "\\";
+                    
                     currentFileName = Path.GetFileNameWithoutExtension(currentFileFullPath);
                 }
 
                 if(index == 1)
                 {
-                    saveTargetDirectory = settingValue[1]; // 두 번째 줄은 saveTargetDirectory
+                    saveTargetDirectory = Path.GetFullPath(settingValue[1]); // 두 번째 줄은 saveTargetDirectory
                 }
             }          
         }
@@ -138,7 +138,7 @@ namespace SLG_ExcelToJson
             ExcelReader.AddExcelFile(currentFileFullPath);
             
             _saveManager.Init(saveTargetDirectory);
-            _saveManager.Save(ExcelReader.InfoList, false);
+            _saveManager.Save(ExcelReader.InfoList, true);
             // var dataDic = new Dictionary<string, JArray>();
             // foreach (var info in ExcelReader.InfoList)
             // {

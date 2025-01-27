@@ -10,16 +10,12 @@ namespace SLG_ExcelToJson
 {
     public class ExcelSheetInfo
     {
-        private Range usedRange;
-        private Worksheet excelSheet;
-        private List<string> dataNames = new List<string>();
-        private List<TypeCode> dataTypeCodes = new List<TypeCode>();
-        private List<string> dataTypeNames = new List<string>();
-        private List<List<dynamic>> dataValues = new List<List<dynamic>>();
-        private int colCount = 0;
-        private int rowCount = 0;
-
+        public List<string> DataNames { get { return this.dataNames; } }
+        public List<TypeCode> DataTypeCodes { get { return this.dataTypeCodes; } }
+        public List<string> DataTypeNames { get { return this.dataTypeNames; } }
+        public List<List<dynamic>> DataValues { get { return this.dataValues; } }
         public Range UsedRange { get { return this.usedRange; } }
+        
         public Worksheet ExcelSheet
         {
             get { return this.excelSheet; }
@@ -28,11 +24,11 @@ namespace SLG_ExcelToJson
                 excelSheet = value;
 
                 //usedRange 자동 할당.
-                this.usedRange = this.excelSheet.UsedRange;
+                usedRange = excelSheet.UsedRange;
 
                 //데이터 네임들 자동으로 뽑아줌.
                 int row = 1;
-                for (int col = 1; col <= this.usedRange.Columns.Count; col++)
+                for (int col = 1; col <= usedRange.Columns.Count; col++)
                 {
                     if (usedRange.Cells[row, col] != null && usedRange.Cells[row, col].Value != null)
                     {
@@ -42,7 +38,7 @@ namespace SLG_ExcelToJson
                 }
                 //데이터 타입스트링 자동으로 뽑아줌.
                 row = 2;
-                for (int col = 1; col <= this.usedRange.Columns.Count; col++)
+                for (int col = 1; col <= usedRange.Columns.Count; col++)
                 {
                     if (usedRange.Cells[row, col] != null && usedRange.Cells[row, col].Value != null)
                     {
@@ -67,13 +63,9 @@ namespace SLG_ExcelToJson
                 }
 
                 //밸류들 자동으로 뽑아줌.
-                this.dataValues = this.GetSheetValues();
+                dataValues = this.GetSheetValues();
             }
         }
-        public List<string> DataNames { get { return this.dataNames; } }
-        public List<TypeCode> DataTypeCodes { get { return this.dataTypeCodes; } }
-        public List<string> DataTypeNames { get { return this.dataTypeNames; } }
-        public List<List<dynamic>> DataValues { get { return this.dataValues; } }
 
         public ExcelSheetInfo()
         {
@@ -81,6 +73,16 @@ namespace SLG_ExcelToJson
             this.dataTypeCodes = new List<TypeCode>();
             this.dataTypeNames = new List<string>();
         }
+        
+        private Range usedRange;
+        private Worksheet excelSheet;
+        private List<string> dataNames = new List<string>();
+        private List<TypeCode> dataTypeCodes = new List<TypeCode>();
+        private List<string> dataTypeNames = new List<string>();
+        private List<List<dynamic>> dataValues = new List<List<dynamic>>();
+        private int colCount = 0;
+        private int rowCount = 0;
+        
 
         public List<List<dynamic>> GetSheetValues()
         {
