@@ -36,6 +36,7 @@
             this.ResultTextBox = new System.Windows.Forms.TextBox();
             this.Btn_FileSelected = new MetroFramework.Controls.MetroButton();
             this.metroButton1 = new MetroFramework.Controls.MetroButton();
+            this.Chk_UseAutoSet = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // MyText
@@ -146,6 +147,17 @@
             this.metroButton1.UseSelectable = true;
             this.metroButton1.Click += new System.EventHandler(this.metroButton1_Click);
             // 
+            // Chk_UseAutoSet
+            // 
+            this.Chk_UseAutoSet.AutoSize = true;
+            this.Chk_UseAutoSet.Location = new System.Drawing.Point(194, 273);
+            this.Chk_UseAutoSet.Name = "Chk_UseAutoSet";
+            this.Chk_UseAutoSet.Size = new System.Drawing.Size(97, 21);
+            this.Chk_UseAutoSet.TabIndex = 20;
+            this.Chk_UseAutoSet.Text = "AutoSetting";
+            this.Chk_UseAutoSet.UseVisualStyleBackColor = true;
+            this.Chk_UseAutoSet.CheckedChanged += new System.EventHandler(this.Chk_UseAutoSet_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -153,6 +165,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(382, 351);
+            this.Controls.Add(this.Chk_UseAutoSet);
             this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.Btn_FileSelected);
             this.Controls.Add(this.txtSysMsg);
@@ -182,6 +195,7 @@
         private System.Windows.Forms.TextBox ResultTextBox;
         private MetroFramework.Controls.MetroButton Btn_FileSelected;
         private MetroFramework.Controls.MetroButton metroButton1;
+        private System.Windows.Forms.CheckBox Chk_UseAutoSet;
     }
 }
 
