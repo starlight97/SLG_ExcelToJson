@@ -202,7 +202,17 @@ namespace SLG_ExcelToJson
         {
             _useAutoSet = Chk_UseAutoSet.Checked;
 
-            if (_useAutoSet == false)
+            if (_useAutoSet)
+            {
+                // 현재 프로그램 실행 경로
+                string currentPath = Directory.GetCurrentDirectory();
+                string gameDataPath = Path.GetFullPath(Path.Combine(currentPath, @"..\..\..\GameData\GameStaticData.xlsx"));
+                string jsonExportPath = Path.GetFullPath(Path.Combine(currentPath, @"..\..\Assets\Resources\Datas"));
+                
+                _currentFileFullPath = Path.GetFullPath(gameDataPath);
+                _saveTargetDirectory = Path.GetFullPath(jsonExportPath); 
+            }
+            else
             {
                 string fileName = "settings.txt";
                 // 파일이 존재하는지 확인
@@ -228,17 +238,7 @@ namespace SLG_ExcelToJson
                     {
                         _saveTargetDirectory = Path.GetFullPath(settingValue[1]); // 두 번째 줄은 saveTargetDirectory
                     }
-                }        
-            }
-            else
-            {
-                // 현재 프로그램 실행 경로
-                string currentPath = Directory.GetCurrentDirectory();
-                string gameDataPath = Path.GetFullPath(Path.Combine(currentPath, @"..\..\..\GameData\GameStaticData.xlsx"));
-                string jsonExportPath = Path.GetFullPath(Path.Combine(currentPath, @"..\..\Assets\Resources\Datas"));
-                
-                _currentFileFullPath = Path.GetFullPath(gameDataPath);
-                _saveTargetDirectory = Path.GetFullPath(jsonExportPath); 
+                }   
             }
             
             txtSysMsg.Text = _currentFileFullPath;

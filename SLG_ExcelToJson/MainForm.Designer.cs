@@ -150,6 +150,8 @@
             // Chk_UseAutoSet
             // 
             this.Chk_UseAutoSet.AutoSize = true;
+            this.Chk_UseAutoSet.Checked = true;
+            this.Chk_UseAutoSet.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Chk_UseAutoSet.Location = new System.Drawing.Point(194, 273);
             this.Chk_UseAutoSet.Name = "Chk_UseAutoSet";
             this.Chk_UseAutoSet.Size = new System.Drawing.Size(97, 21);
