@@ -59,7 +59,8 @@ namespace SLG_ExcelToJson
                 
                 _currentFileFullPath = Path.GetFullPath(gameDataPath);
                 _gameDataDirPath = Path.GetFullPath(gameDataDirPath);
-                _saveTargetDirectory = Path.GetFullPath(jsonExportPath);
+                // _saveTargetDirectory = Path.GetFullPath(jsonExportPath);
+                _saveTargetDirectory = Path.GetFullPath(gameDataDirPath);
 
                 AddDebugLog(_gameDataDirPath);
             }
@@ -154,7 +155,6 @@ namespace SLG_ExcelToJson
                 {
                     _excelManager.ProcessSingleFile(dataFilePath);
                 }
-                // _excelManager.ProcessSingleFile(_currentFileFullPath);
                 
                 _saveManager.Init(_saveTargetDirectory);
                 _saveManager.Save(_excelManager.GetInfoList(), true);
@@ -288,6 +288,8 @@ namespace SLG_ExcelToJson
 
         private void OnClickDebugLog(object sender, EventArgs e)
         {
+            return;
+            
             _isExpanded = !_isExpanded;
             
             Height = _isExpanded ? EXPANDED_HEIGHT : DEFAULT_HEIGHT;

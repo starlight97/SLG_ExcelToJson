@@ -30,17 +30,25 @@ namespace SLG_ExcelToJson
             //파일 입력 받을때마다 Sheet 개별을 가져옴
             for (int i = 1; i <= ExcelSheets.Count; i++)
             {
-                var info = new ExcelSheetInfo();
-                _infoList.Add(info);
-
+                var sheetData = ExcelSheets.Item[i];
+                
                 try
                 {
+                    var name = sheetData.Name;
+                    var skipData = name.StartsWith("_");
+                    if (skipData)
+                    {
+                        continue;
+                    }
+                    
+                    var info = new ExcelSheetInfo();
                     info.ExcelSheet = ExcelSheets.Item[i];
+                    _infoList.Add(info);
                 }
                 catch (Exception e)
                 {
                     var msg = "Json Convert Error\r\n";
-                    foreach (var dataName in info.DataNames)
+                    foreach (var dataName in sheetData.DataNames)
                     {
                         msg += dataName + "\r\n";
                     }
@@ -51,12 +59,7 @@ namespace SLG_ExcelToJson
                 }
             }
         }
-
-        //public static void AddExcelFiles(string[] filePaths)
-        //{
-        //    foreach (string path in filePaths)
-        //        AddExcelFile(path);
-        //}
+        
 
         public static List<List<List<dynamic>>> GetAllSheetValues()
         {

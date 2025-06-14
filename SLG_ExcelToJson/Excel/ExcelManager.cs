@@ -32,7 +32,7 @@ namespace SLG_ExcelToJson
             _settingsFilePath = Path.Combine(_gameDataDirPath, "setting.txt");
 
             // settings.txt 파일이 없다면 생성
-            if (!File.Exists(_settingsFilePath))
+            if (File.Exists(_settingsFilePath) == false)
             {
                 File.WriteAllText(_settingsFilePath, "# 처리할 엑셀 파일 이름을 한 줄에 하나씩 입력하세요\r\n# 예시:\r\n# Character.xlsx\r\n# Item.xlsx");
             }
@@ -70,7 +70,9 @@ namespace SLG_ExcelToJson
         public void ProcessSingleFile(string filePath)
         {
             if (!File.Exists(filePath))
+            {
                 throw new FileNotFoundException($"파일을 찾을 수 없습니다: {filePath}");
+            }
 
             ExcelReader.AddExcelFile(filePath);
         }
