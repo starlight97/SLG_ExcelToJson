@@ -59,8 +59,8 @@ namespace SLG_ExcelToJson
                 
                 _currentFileFullPath = Path.GetFullPath(gameDataPath);
                 _gameDataDirPath = Path.GetFullPath(gameDataDirPath);
-                // _saveTargetDirectory = Path.GetFullPath(jsonExportPath);
-                _saveTargetDirectory = Path.GetFullPath(gameDataDirPath);
+                _saveTargetDirectory = Path.GetFullPath(jsonExportPath);
+                // _saveTargetDirectory = Path.GetFullPath(gameDataDirPath);
 
                 AddDebugLog(_gameDataDirPath);
             }
