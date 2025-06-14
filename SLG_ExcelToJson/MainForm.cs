@@ -90,6 +90,18 @@ namespace SLG_ExcelToJson
             // 파일에 기본 설정값 작성
             File.WriteAllLines(fileName, defaultSettings);
         }
+
+        private bool IsValid(out string errorMsg)
+        {
+            errorMsg = string.Empty;
+            if (_currentFileFullPath == null || File.Exists(_currentFileFullPath) == false)
+            {
+                errorMsg = $"{_currentFileFullPath} 변환할 파일이 없습니다.";
+                return false;
+            }
+            
+            return true;
+        }
         
         
         #region OnClick
@@ -97,6 +109,16 @@ namespace SLG_ExcelToJson
         private void OnClickConvert(object sender, EventArgs e)
         {
             ResultTextBox.Text = "변환 시작!!! 로딩중.....";
+
+            var isValid = IsValid(out var errorMsg);
+            if (isValid == false)
+            {
+                MessageBox.Show(errorMsg
+                    , "Error"
+                    , MessageBoxButtons.OK,MessageBoxIcon.Information
+                    , MessageBoxDefaultButton.Button2);
+                ResultTextBox.Text = "변환 준비중...";
+            }
 
             //if (Directory.Exists(currentDirectory + "\\json") == false)
             //{
@@ -106,25 +128,7 @@ namespace SLG_ExcelToJson
             //{
             //    Directory.CreateDirectory(currentDirectory + "\\cs");
             //}
-
-            //if (lbxExcelList.SelectedItems.Count < 1)
-            //{
-            //    MessageBox.Show("변환할 파일이 없습니다.", "아이고...", MessageBoxButtons.OK,
-            //        MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
-            //    ResultTextBox.Text = "변환 준비중...";
-            //    return;
-            //}
-            //
-
-            if (_currentFileFullPath == null || File.Exists(_currentFileFullPath) == false)
-            {
-                MessageBox.Show($"{_currentFileFullPath} 변환할 파일이 없습니다."
-                                , "아이고..."
-                                , MessageBoxButtons.OK,MessageBoxIcon.Information
-                                , MessageBoxDefaultButton.Button2);
-                ResultTextBox.Text = "변환 준비중...";
-                return;
-            }
+            
 
             ExcelReader.Init();
             ExcelReader.AddExcelFile(_currentFileFullPath);
