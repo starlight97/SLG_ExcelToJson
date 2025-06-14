@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace SLG_ExcelToJson
 {
-    public class ExcelSheetInfo2
+    public class ExcelSheetInfo
     {
         public List<string> DataNames => this.dataNames;
         public List<TypeCode> DataTypeCodes => this.dataTypeCodes;

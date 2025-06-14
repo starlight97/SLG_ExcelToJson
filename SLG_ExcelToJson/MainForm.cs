@@ -10,25 +10,37 @@ namespace SLG_ExcelToJson
 {
     public partial class MainForm : MetroFramework.Forms.MetroForm
     {
-        public List<FileManager> FileManagerList;
+        private const int DEFAULT_WIDTH = 382;
+        private const int EXPANDED_WIDTH = 1920;
+        
+        private const int DEFAULT_HEIGHT = 351;
+        private const int EXPANDED_HEIGHT = 1080;
+        
 
         private ExcelManager _excelManager;
         private SaveManager _saveManager;
         private List<string> _excelPathList;
+        private List<SLGFile> _fileList;
         private string _currentFileFullPath;
+        private string _gameDataDirPath;
 
         private string _saveTargetDirectory = string.Empty;
         private bool _useAutoSet;
+        private bool _isExpanded = false;
+
 
         public MainForm()
         {
-            FileManagerList = new List<FileManager>();
+            _fileList = new List<SLGFile>();
             _saveManager = new SaveManager();
             _excelManager = new ExcelManager();
 
             _excelPathList = new List<string>();
 
             InitializeComponent();
+            
+            Height = DEFAULT_HEIGHT;
+            Width = DEFAULT_WIDTH;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -45,10 +57,14 @@ namespace SLG_ExcelToJson
                 // 현재 프로그램 실행 경로
                 var currentPath = Directory.GetCurrentDirectory();
                 var gameDataPath = Path.GetFullPath(Path.Combine(currentPath, @"..\..\..\GameData\GameStaticData.xlsx"));
+                var gameDataDirPath = Path.GetFullPath(Path.Combine(currentPath, @"..\..\..\GameData\"));
                 var jsonExportPath = Path.GetFullPath(Path.Combine(currentPath, @"..\..\Assets\Resources\Datas"));
                 
                 _currentFileFullPath = Path.GetFullPath(gameDataPath);
-                _saveTargetDirectory = Path.GetFullPath(jsonExportPath); 
+                _gameDataDirPath = Path.GetFullPath(gameDataDirPath);
+                _saveTargetDirectory = Path.GetFullPath(jsonExportPath);
+
+                AddDebugLog(_gameDataDirPath);
             }
             else
             {
@@ -103,24 +119,53 @@ namespace SLG_ExcelToJson
             
             return true;
         }
+
+        private void AddDebugLog(string log)
+        {
+            TXB_DebugLog.Text += $"\r\n{log}";
+        }
         
         
         #region OnClick
 
         private void OnClickConvert(object sender, EventArgs e)
         {
-            ResultTextBox.Text = "변환 시작!!! 로딩중.....";
-
             var isValid = IsValid(out var errorMsg);
             if (isValid == false)
             {
-                MessageBox.Show(errorMsg
-                    , "Error"
-                    , MessageBoxButtons.OK,MessageBoxIcon.Information
-                    , MessageBoxDefaultButton.Button2);
-                ResultTextBox.Text = "변환 준비중...";
+                MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, 
+                    MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+                BtnSysLog.Text = "변환 준비중...";
+                return;
             }
+            try
+            {
+                _excelManager.Init(_gameDataDirPath);
+                _excelManager.ProcessSingleFile(_currentFileFullPath);
+                
+                _saveManager.Init(_saveTargetDirectory);
+                _saveManager.Save(_excelManager.GetInfoList(), true);
+                
+                ErrorManager.instance.Show();
+                _fileList.Clear();
+                
+                Process.Start(_saveTargetDirectory);
+                ErrorManager.instance.Clear();
+                BtnSysLog.Text = "변환이 완료되었습니다!!!";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"변환 중 오류가 발생했습니다: {ex.Message}", 
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                _excelManager.Clear();
+            }
+        }
 
+        private void OnClickConvertLegacy(object sender, EventArgs e)
+        {
             //if (Directory.Exists(currentDirectory + "\\json") == false)
             //{
             //    Directory.CreateDirectory(currentDirectory + "\\json");
@@ -129,13 +174,7 @@ namespace SLG_ExcelToJson
             //{
             //    Directory.CreateDirectory(currentDirectory + "\\cs");
             //}
-            
 
-            ExcelReader2.Init();
-            ExcelReader2.AddExcelFile(_currentFileFullPath);
-            
-            _saveManager.Init(_saveTargetDirectory);
-            _saveManager.Save(ExcelReader2.InfoList, true);
             // var dataDic = new Dictionary<string, JArray>();
             // foreach (var info in ExcelReader.InfoList)
             // {
@@ -172,13 +211,6 @@ namespace SLG_ExcelToJson
             //    maker.AddField(ExcelReader.InfoList[i].DataNames, ExcelReader.InfoList[i].DataTypeCodes);
             //    maker.GenerateCSharpCode();
             //}
-            
-            ErrorManager.instance.Show();
-            FileManagerList.Clear();
-            ExcelReader2.Clear();
-            Process.Start(_saveTargetDirectory);
-            ErrorManager.instance.Clear();
-            ResultTextBox.Text = "변환이 완료되었습니다!!!";
         }
         
         private void OnClickClose(object sender, EventArgs e)
@@ -219,7 +251,7 @@ namespace SLG_ExcelToJson
 
         private void OnClickFileSelected(object sender, EventArgs e)
         {
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            var dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = false; // true : 폴더 선택 / false : 파일 선택
             dialog.Filters.Add(new CommonFileDialogFilter("Excel 파일", "*.xlsx")); // 필터 추가
 
@@ -232,7 +264,7 @@ namespace SLG_ExcelToJson
 
         private void OnClickSaveDirectoryOpen(object sender, EventArgs e)
         {
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            var dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = true; // true : 폴더 선택 / false : 파일 선택
 
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
@@ -240,13 +272,15 @@ namespace SLG_ExcelToJson
                 _saveTargetDirectory = dialog.FileName +"\\";
             }
         }
+
+        private void OnClickDebugLog(object sender, EventArgs e)
+        {
+            _isExpanded = !_isExpanded;
+            
+            Height = _isExpanded ? EXPANDED_HEIGHT : DEFAULT_HEIGHT;
+            Width = _isExpanded ? EXPANDED_WIDTH : DEFAULT_WIDTH;
+        }
         
         #endregion
-        
-
-        private void Chk_UseAutoSet_CheckedChanged(object sender, EventArgs e)
-        {
-            _useAutoSet = Chk_UseAutoSet.Checked;
-        }
     }
 }

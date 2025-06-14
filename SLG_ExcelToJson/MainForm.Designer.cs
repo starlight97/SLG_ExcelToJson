@@ -33,10 +33,11 @@
             this.mbtDirectoryOpen = new MetroFramework.Controls.MetroButton();
             this.mbtClose = new MetroFramework.Controls.MetroButton();
             this.txtSysMsg = new System.Windows.Forms.TextBox();
-            this.ResultTextBox = new System.Windows.Forms.TextBox();
             this.Btn_FileSelected = new MetroFramework.Controls.MetroButton();
             this.metroButton1 = new MetroFramework.Controls.MetroButton();
             this.Chk_UseAutoSet = new System.Windows.Forms.CheckBox();
+            this.BtnSysLog = new MetroFramework.Controls.MetroButton();
+            this.TXB_DebugLog = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // MyText
@@ -106,17 +107,6 @@
             this.txtSysMsg.Size = new System.Drawing.Size(350, 64);
             this.txtSysMsg.TabIndex = 15;
             // 
-            // ResultTextBox
-            // 
-            this.ResultTextBox.Enabled = false;
-            this.ResultTextBox.Font = new System.Drawing.Font("굴림체", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.ResultTextBox.Location = new System.Drawing.Point(12, 310);
-            this.ResultTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.ResultTextBox.Name = "ResultTextBox";
-            this.ResultTextBox.Size = new System.Drawing.Size(346, 26);
-            this.ResultTextBox.TabIndex = 10;
-            this.ResultTextBox.Text = "변환 준비중....";
-            // 
             // Btn_FileSelected
             // 
             this.Btn_FileSelected.FontSize = MetroFramework.MetroButtonSize.Tall;
@@ -158,15 +148,37 @@
             this.Chk_UseAutoSet.TabIndex = 20;
             this.Chk_UseAutoSet.Text = "AutoSetting";
             this.Chk_UseAutoSet.UseVisualStyleBackColor = true;
-            this.Chk_UseAutoSet.CheckedChanged += new System.EventHandler(this.Chk_UseAutoSet_CheckedChanged);
+            // 
+            // BtnSysLog
+            // 
+            this.BtnSysLog.FontSize = MetroFramework.MetroButtonSize.Tall;
+            this.BtnSysLog.ForeColor = System.Drawing.Color.Black;
+            this.BtnSysLog.Location = new System.Drawing.Point(16, 301);
+            this.BtnSysLog.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.BtnSysLog.Name = "BtnSysLog";
+            this.BtnSysLog.Size = new System.Drawing.Size(342, 36);
+            this.BtnSysLog.TabIndex = 21;
+            this.BtnSysLog.UseCustomForeColor = true;
+            this.BtnSysLog.UseSelectable = true;
+            this.BtnSysLog.Click += new System.EventHandler(this.OnClickDebugLog);
+            // 
+            // TXB_DebugLog
+            // 
+            this.TXB_DebugLog.Enabled = false;
+            this.TXB_DebugLog.Font = new System.Drawing.Font("맑은 고딕", 13F);
+            this.TXB_DebugLog.Location = new System.Drawing.Point(16, 344);
+            this.TXB_DebugLog.Multiline = true;
+            this.TXB_DebugLog.Name = "TXB_DebugLog";
+            this.TXB_DebugLog.Size = new System.Drawing.Size(492, 142);
+            this.TXB_DebugLog.TabIndex = 22;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(382, 351);
+            this.ClientSize = new System.Drawing.Size(519, 499);
+            this.Controls.Add(this.TXB_DebugLog);
+            this.Controls.Add(this.BtnSysLog);
             this.Controls.Add(this.Chk_UseAutoSet);
             this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.Btn_FileSelected);
@@ -174,7 +186,6 @@
             this.Controls.Add(this.mbtClose);
             this.Controls.Add(this.mbtDirectoryOpen);
             this.Controls.Add(this.mbtConvert);
-            this.Controls.Add(this.ResultTextBox);
             this.Controls.Add(this.MyText);
             this.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -194,10 +205,11 @@
         private MetroFramework.Controls.MetroButton mbtDirectoryOpen;
         private MetroFramework.Controls.MetroButton mbtClose;
         private System.Windows.Forms.TextBox txtSysMsg;
-        private System.Windows.Forms.TextBox ResultTextBox;
         private MetroFramework.Controls.MetroButton Btn_FileSelected;
         private MetroFramework.Controls.MetroButton metroButton1;
         private System.Windows.Forms.CheckBox Chk_UseAutoSet;
+        private MetroFramework.Controls.MetroButton BtnSysLog;
+        private System.Windows.Forms.TextBox TXB_DebugLog;
     }
 }
 

@@ -8,116 +8,69 @@ namespace SLG_ExcelToJson
 {
     public class ExcelManager
     {
-        private readonly string[] EXCEL_EXTENSIONS = { ".xlsx", ".xls" };
-        private List<string> _excelFiles = new List<string>();
-        private List<string> _filteredFiles = new List<string>();
-        private string _selectedFolderPath;
-        
-        
-        /// <summary>
-        /// 사용자가 폴더를 선택하고 엑셀 파일들을 읽어오는 메서드
-        /// </summary>
-        /// <returns>선택된 폴더 경로</returns>
-        public string SelectFolder()
-        {
-            using (var dialog = new CommonOpenFileDialog())
-            {
-                dialog.IsFolderPicker = true;
-                dialog.Title = "엑셀 파일이 있는 폴더를 선택하세요";
+        private readonly ExcelReader _excelReader;
+        private string _settingsFilePath;    
 
-                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-                {
-                    _selectedFolderPath = dialog.FileName;
-                    LoadExcelFiles();
-                    return _selectedFolderPath;
-                }
-                
-                return string.Empty;
-            }
+        public ExcelManager()
+        {
+            _excelReader = new ExcelReader();
         }
 
-        /// <summary>
-        /// 선택된 폴더에서 엑셀 파일들을 읽어오는 메서드
-        /// </summary>
-        private void LoadExcelFiles()
+        public void Init(string gameDataDirPath)
         {
-            _excelFiles.Clear();
+            _settingsFilePath = Path.Combine(gameDataDirPath, "setting.txt");
+
+            // settings.txt 파일이 없다면 생성
+            if (!File.Exists(_settingsFilePath))
+            {
+                File.WriteAllText(_settingsFilePath, "# 처리할 엑셀 파일 이름을 한 줄에 하나씩 입력하세요\r\n# 예시:\r\n# Character.xlsx\r\n# Item.xlsx");
+            }
+
             
-            try
-            {
-                var files = Directory.GetFiles(_selectedFolderPath)
-                                   .Where(file => EXCEL_EXTENSIONS.Contains(Path.GetExtension(file).ToLower()));
-                
-                _excelFiles.AddRange(files);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"엑셀 파일 로딩 중 오류 발생: {ex.Message}");
-            }
+            ExcelReader.Init();
+        }
+
+
+        /// <summary>
+        /// 단일 엑셀 파일을 처리합니다.
+        /// </summary>
+        public void ProcessSingleFile(string filePath)
+        {
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException($"파일을 찾을 수 없습니다: {filePath}");
+
+            ExcelReader.AddExcelFile(filePath);
+        }
+        
+
+        /// <summary>
+        /// 모든 시트의 데이터를 가져옵니다.
+        /// </summary>
+        public List<List<List<dynamic>>> GetAllSheetValues()
+        {
+            return ExcelReader.GetAllSheetValues();
         }
 
         /// <summary>
-        /// 필터 텍스트 파일을 선택하고 필터링을 수행하는 메서드
+        /// 특정 시트의 데이터를 가져옵니다.
         /// </summary>
-        /// <returns>필터링된 파일 목록</returns>
-        public List<string> FilterExcelFiles()
+        public List<List<dynamic>> GetSheetValuesByIndex(int index)
         {
-            using (CommonOpenFileDialog dialog = new CommonOpenFileDialog())
-            {
-                dialog.IsFolderPicker = false;
-                dialog.Title = "필터 텍스트 파일을 선택하세요";
-                dialog.Filters.Add(new CommonFileDialogFilter("Text files", "*.txt"));
-
-                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-                {
-                    return ApplyFilter(dialog.FileName);
-                }
-                
-                return new List<string>();
-            }
+            return ExcelReader.GetSheetValuesByIndex(index);
         }
 
         /// <summary>
-        /// 텍스트 파일 내용을 기반으로 엑셀 파일을 필터링하는 메서드
+        /// 현재 처리된 엑셀 파일의 정보 목록을 반환합니다.
         /// </summary>
-        /// <param name="filterFilePath">필터 텍스트 파일 경로</param>
-        /// <returns>필터링된 파일 목록</returns>
-        private List<string> ApplyFilter(string filterFilePath)
+        public List<ExcelSheetInfo> GetInfoList()
         {
-            _filteredFiles.Clear();
-            
-            try
-            {
-                // 텍스트 파일에서 파일명 목록 읽기
-                var filterNames = File.ReadAllLines(filterFilePath)
-                                    .Where(line => !string.IsNullOrWhiteSpace(line))
-                                    .Select(line => line.Trim())
-                                    .ToList();
-
-                // 파일명과 확장자를 분리하여 비교
-                foreach (var excelFile in _excelFiles)
-                {
-                    var fileName = Path.GetFileNameWithoutExtension(excelFile);
-                    if (filterNames.Contains(fileName))
-                    {
-                        _filteredFiles.Add(excelFile);
-                    }
-                }
-
-                return _filteredFiles;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"파일 필터링 중 오류 발생: {ex.Message}");
-            }
+            return ExcelReader.InfoList;
         }
-
-        /// <summary>
-        /// 필터링된 파일 목록을 반환하는 메서드
-        /// </summary>
-        public List<string> GetFilteredFiles()
+    
+        
+        public void Clear()
         {
-            return _filteredFiles;
+            ExcelReader.Clear();
         }
     }
 }

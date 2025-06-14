@@ -8,17 +8,19 @@ namespace SLG_ExcelToJson
     public class SaveManager
     {
         private string _saveTargetDirectory;
-        private List<FileManager> FileManagerList;
+        private List<SLGFile> FileManagerList;
 
         public SaveManager()
         {
-            FileManagerList = new List<FileManager>();
+            FileManagerList = new List<SLGFile>();
         }
         public void Init(string saveTargetDirectory)
         {
             _saveTargetDirectory = saveTargetDirectory;
         }
-        public void Save(List<ExcelSheetInfo2> infoList , bool isMulti)
+        
+        
+        public void Save(List<ExcelSheetInfo> infoList , bool isMulti)
         {
             if (isMulti)
             {
@@ -38,14 +40,18 @@ namespace SLG_ExcelToJson
                     foreach (var values in info.DataValues)
                     {
                         var jobj = ChangeToJObject(info.DataNames, values, info.DataTypeNames);
-                        if (jobj != null)
-                            jArray.Add(jobj);
+                        if (jobj == null)
+                        {
+                            continue;
+                        }
+                        
+                        jArray.Add(jobj);
                     }
 
                     var json = jArray.ToString();
                     var fileName = $"{info.ExcelSheet.Name}Data.json";
                     var filePath = Path.Combine(_saveTargetDirectory, $"{fileName}");
-                    var fileManager = new FileManager(filePath);
+                    var fileManager = new SLGFile(filePath);
                     fileManager.FileName = fileName;
                     fileManager.NewFileName =fileName;
                     fileManager.SaveNewFile(json);

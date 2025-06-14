@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace SLG_ExcelToJson
 {
-    public class FileManager
+    public class SLGFile
     {
         //파일의 경로만.
         private string @filePath;
@@ -149,8 +146,8 @@ namespace SLG_ExcelToJson
             }
         }
 
-        public FileManager() { }
-        public FileManager(string fileFullPath, string newFileFullPath = "")
+        public SLGFile() { }
+        public SLGFile(string fileFullPath, string newFileFullPath = "")
         {
             this.FileFullPath = fileFullPath;
             this.NewFileFullPath = newFileFullPath;

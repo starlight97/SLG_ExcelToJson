@@ -79,9 +79,10 @@
     <Compile Include="ClassMaker.cs" />
     <Compile Include="DataTypeChanger.cs" />
     <Compile Include="Excel\ExcelManager.cs" />
+    <Compile Include="Excel\ExcelReader.cs" />
     <Compile Include="Excel\ExcelReader2.cs" />
-    <Compile Include="Excel\ExcelSheetInfo2.cs" />
-    <Compile Include="FileManager.cs" />
+    <Compile Include="Excel\ExcelSheetInfo.cs" />
+    <Compile Include="SLGFile.cs" />
     <Compile Include="JsonChanger.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

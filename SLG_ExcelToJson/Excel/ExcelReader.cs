@@ -5,7 +5,7 @@ using System;
 
 namespace SLG_ExcelToJson
 {
-    public static class ExcelReader2
+    public class ExcelReader
     {
         public static Application ExcelApp;
         public static Workbooks ExcelBooks;
