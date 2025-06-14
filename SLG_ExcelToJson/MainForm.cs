@@ -34,44 +34,67 @@ namespace SLG_ExcelToJson
         {
             Init();
         }
-
-        private void mbtClose_Click(object sender, EventArgs e)
+        
+        private void Init()
         {
-            string targetFilePath = _currentFileFullPath;
-            string targetSaveDirectoryPath = _saveTargetDirectory;
+            _useAutoSet = Chk_UseAutoSet.Checked;
 
-            string settingValue = targetFilePath + "\r\n";
-            settingValue += targetSaveDirectoryPath + "\r\n";
-            File.WriteAllText($"settings.txt", settingValue);
+            if (_useAutoSet)
+            {
+                // 현재 프로그램 실행 경로
+                string currentPath = Directory.GetCurrentDirectory();
+                string gameDataPath = Path.GetFullPath(Path.Combine(currentPath, @"..\..\..\GameData\GameStaticData.xlsx"));
+                string jsonExportPath = Path.GetFullPath(Path.Combine(currentPath, @"..\..\Assets\Resources\Datas"));
+                
+                _currentFileFullPath = Path.GetFullPath(gameDataPath);
+                _saveTargetDirectory = Path.GetFullPath(jsonExportPath); 
+            }
+            else
+            {
+                string fileName = "settings.txt";
+                // 파일이 존재하는지 확인
+                if (!File.Exists(fileName))
+                {
+                    // 파일이 없는 경우에는 새로운 파일을 생성
+                    CreateSettingsFile(fileName);
+                }
+                string[] settingValue = File.ReadAllLines("settings.txt");
 
-            Application.Exit();
+
+                for (int index = 0; index < settingValue.Count(); index++)
+                {
+                    if (settingValue[index] == string.Empty)
+                        continue;
+
+                    if(index == 0)
+                    {
+                        _currentFileFullPath = Path.GetFullPath(settingValue[0]); // 첫 번째 줄은 currentFileFullPath
+                    }
+
+                    if(index == 1)
+                    {
+                        _saveTargetDirectory = Path.GetFullPath(settingValue[1]); // 두 번째 줄은 saveTargetDirectory
+                    }
+                }   
+            }
+            
+            txtSysMsg.Text = _currentFileFullPath;
         }
-
-        private void mbtDirectoryOpen_Click(object sender, EventArgs e)
+        
+        private void CreateSettingsFile(string fileName)
         {
-            //CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-            //dialog.IsFolderPicker = true; // true : 폴더 선택 / false : 파일 선택
+            // 설정값 예시
+            //string[] defaultSettings = { "Setting1=Value1", "Setting2=Value2", "Setting3=Value3" };
+            string[] defaultSettings = { "" };
 
-            //if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-            //{
-            //    lbxExcelList.Items.Clear();
-            //    excelPaths.Clear();
-            //    txtSysMsg.Text = dialog.FileName;
-            //    currentDirectory = dialog.FileName;
-            //    System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(dialog.FileName);
-            //    foreach (var file in di.GetFiles())
-            //    {
-            //        if (file.Extension == ".xlsx")
-            //        {
-            //            lbxExcelList.Items.Add(file.Name);
-            //            excelPaths.Add(file.FullName);
-            //        }
-
-            //    }
-            //}
+            // 파일에 기본 설정값 작성
+            File.WriteAllLines(fileName, defaultSettings);
         }
+        
+        
+        #region OnClick
 
-        private void mbtConvert_Click(object sender, EventArgs e)
+        private void OnClickConvert(object sender, EventArgs e)
         {
             ResultTextBox.Text = "변환 시작!!! 로딩중.....";
 
@@ -159,9 +182,44 @@ namespace SLG_ExcelToJson
             ResultTextBox.Text = "변환이 완료되었습니다!!!";
             Process.Start(_saveTargetDirectory);
         }
+        
+        private void OnClickClose(object sender, EventArgs e)
+        {
+            string targetFilePath = _currentFileFullPath;
+            string targetSaveDirectoryPath = _saveTargetDirectory;
 
+            string settingValue = targetFilePath + "\r\n";
+            settingValue += targetSaveDirectoryPath + "\r\n";
+            File.WriteAllText($"settings.txt", settingValue);
 
-        private void Btn_FileSelected_Click(object sender, EventArgs e)
+            Application.Exit();
+        }
+
+        private void OnClickDirectoryOpen(object sender, EventArgs e)
+        {
+            //CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            //dialog.IsFolderPicker = true; // true : 폴더 선택 / false : 파일 선택
+
+            //if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            //{
+            //    lbxExcelList.Items.Clear();
+            //    excelPaths.Clear();
+            //    txtSysMsg.Text = dialog.FileName;
+            //    currentDirectory = dialog.FileName;
+            //    System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(dialog.FileName);
+            //    foreach (var file in di.GetFiles())
+            //    {
+            //        if (file.Extension == ".xlsx")
+            //        {
+            //            lbxExcelList.Items.Add(file.Name);
+            //            excelPaths.Add(file.FullName);
+            //        }
+
+            //    }
+            //}
+        }
+
+        private void OnClickFileSelected(object sender, EventArgs e)
         {
             CommonOpenFileDialog dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = false; // true : 폴더 선택 / false : 파일 선택
@@ -173,9 +231,8 @@ namespace SLG_ExcelToJson
                 _currentFileFullPath = dialog.FileName;
             }
         }
-        
 
-        private void metroButton1_Click(object sender, EventArgs e)
+        private void OnClickSaveDirectoryOpen(object sender, EventArgs e)
         {
             CommonOpenFileDialog dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = true; // true : 폴더 선택 / false : 파일 선택
@@ -185,62 +242,9 @@ namespace SLG_ExcelToJson
                 _saveTargetDirectory = dialog.FileName +"\\";
             }
         }
-
-        private void CreateSettingsFile(string fileName)
-        {
-            // 설정값 예시
-            //string[] defaultSettings = { "Setting1=Value1", "Setting2=Value2", "Setting3=Value3" };
-            string[] defaultSettings = { "" };
-
-            // 파일에 기본 설정값 작성
-            File.WriteAllLines(fileName, defaultSettings);
-        }
-
-        private void Init()
-        {
-            _useAutoSet = Chk_UseAutoSet.Checked;
-
-            if (_useAutoSet)
-            {
-                // 현재 프로그램 실행 경로
-                string currentPath = Directory.GetCurrentDirectory();
-                string gameDataPath = Path.GetFullPath(Path.Combine(currentPath, @"..\..\..\GameData\GameStaticData.xlsx"));
-                string jsonExportPath = Path.GetFullPath(Path.Combine(currentPath, @"..\..\Assets\Resources\Datas"));
-                
-                _currentFileFullPath = Path.GetFullPath(gameDataPath);
-                _saveTargetDirectory = Path.GetFullPath(jsonExportPath); 
-            }
-            else
-            {
-                string fileName = "settings.txt";
-                // 파일이 존재하는지 확인
-                if (!File.Exists(fileName))
-                {
-                    // 파일이 없는 경우에는 새로운 파일을 생성
-                    CreateSettingsFile(fileName);
-                }
-                string[] settingValue = File.ReadAllLines("settings.txt");
-
-
-                for (int index = 0; index < settingValue.Count(); index++)
-                {
-                    if (settingValue[index] == string.Empty)
-                        continue;
-
-                    if(index == 0)
-                    {
-                        _currentFileFullPath = Path.GetFullPath(settingValue[0]); // 첫 번째 줄은 currentFileFullPath
-                    }
-
-                    if(index == 1)
-                    {
-                        _saveTargetDirectory = Path.GetFullPath(settingValue[1]); // 두 번째 줄은 saveTargetDirectory
-                    }
-                }   
-            }
-            
-            txtSysMsg.Text = _currentFileFullPath;
-        }
+        
+        #endregion
+        
 
         private void Chk_UseAutoSet_CheckedChanged(object sender, EventArgs e)
         {

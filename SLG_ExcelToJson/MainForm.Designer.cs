@@ -63,7 +63,7 @@
             this.mbtConvert.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.mbtConvert.UseCustomForeColor = true;
             this.mbtConvert.UseSelectable = true;
-            this.mbtConvert.Click += new System.EventHandler(this.mbtConvert_Click);
+            this.mbtConvert.Click += new System.EventHandler(this.OnClickConvert);
             // 
             // mbtDirectoryOpen
             // 
@@ -79,7 +79,7 @@
             this.mbtDirectoryOpen.UseCustomForeColor = true;
             this.mbtDirectoryOpen.UseSelectable = true;
             this.mbtDirectoryOpen.Visible = false;
-            this.mbtDirectoryOpen.Click += new System.EventHandler(this.mbtDirectoryOpen_Click);
+            this.mbtDirectoryOpen.Click += new System.EventHandler(this.OnClickDirectoryOpen);
             // 
             // mbtClose
             // 
@@ -94,7 +94,7 @@
             this.mbtClose.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.mbtClose.UseCustomForeColor = true;
             this.mbtClose.UseSelectable = true;
-            this.mbtClose.Click += new System.EventHandler(this.mbtClose_Click);
+            this.mbtClose.Click += new System.EventHandler(this.OnClickClose);
             // 
             // txtSysMsg
             // 
@@ -130,7 +130,7 @@
             this.Btn_FileSelected.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Btn_FileSelected.UseCustomForeColor = true;
             this.Btn_FileSelected.UseSelectable = true;
-            this.Btn_FileSelected.Click += new System.EventHandler(this.Btn_FileSelected_Click);
+            this.Btn_FileSelected.Click += new System.EventHandler(this.OnClickFileSelected);
             // 
             // metroButton1
             // 
@@ -145,7 +145,7 @@
             this.metroButton1.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton1.UseCustomForeColor = true;
             this.metroButton1.UseSelectable = true;
-            this.metroButton1.Click += new System.EventHandler(this.metroButton1_Click);
+            this.metroButton1.Click += new System.EventHandler(this.OnClickSaveDirectoryOpen);
             // 
             // Chk_UseAutoSet
             // 
