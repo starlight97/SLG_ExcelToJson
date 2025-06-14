@@ -164,19 +164,18 @@
             // 
             // TXB_DebugLog
             // 
-            this.TXB_DebugLog.Enabled = false;
             this.TXB_DebugLog.Font = new System.Drawing.Font("맑은 고딕", 13F);
             this.TXB_DebugLog.Location = new System.Drawing.Point(16, 344);
             this.TXB_DebugLog.Multiline = true;
             this.TXB_DebugLog.Name = "TXB_DebugLog";
-            this.TXB_DebugLog.Size = new System.Drawing.Size(492, 142);
+            this.TXB_DebugLog.Size = new System.Drawing.Size(982, 142);
             this.TXB_DebugLog.TabIndex = 22;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(519, 499);
+            this.ClientSize = new System.Drawing.Size(1027, 532);
             this.Controls.Add(this.TXB_DebugLog);
             this.Controls.Add(this.BtnSysLog);
             this.Controls.Add(this.Chk_UseAutoSet);

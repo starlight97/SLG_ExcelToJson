@@ -1,0 +1,26 @@
+[
+  {
+    "id": "int",
+    "characte_grade": "Grade",
+    "hero_name": "string",
+    "hp": "int",
+    "atk": "int",
+    "unique_ability01": "int",
+    "unique_ability02": "int",
+    "unique_ability03": "int",
+    "unique_ability04": "int",
+    "model_path": "string"
+  },
+  {
+    "id": 1,
+    "characte_grade": "Common",
+    "hero_name": "화염 마법사",
+    "hp": 1000,
+    "atk": 20,
+    "unique_ability01": 1002,
+    "unique_ability02": 0,
+    "unique_ability03": 0,
+    "unique_ability04": 0,
+    "model_path": "InGame/Character/E_High_Archer"
+  }
+]

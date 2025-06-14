@@ -1,0 +1,26 @@
+[
+  {
+    "id": "int",
+    "skill_name": "string",
+    "skill_typing": "int",
+    "element": "Element",
+    "skill_grade": "Grade",
+    "mission_end_time": "int"
+  },
+  {
+    "id": 1001,
+    "skill_name": "파이어 볼",
+    "skill_typing": 2,
+    "element": "Fire",
+    "skill_grade": "Common",
+    "mission_end_time": 100
+  },
+  {
+    "id": 1002,
+    "skill_name": "파이어 스톰",
+    "skill_typing": 4,
+    "element": "Fire",
+    "skill_grade": "Unique",
+    "mission_end_time": 300
+  }
+]

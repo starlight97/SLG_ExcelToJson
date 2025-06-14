@@ -19,7 +19,6 @@ namespace SLG_ExcelToJson
 
         private ExcelManager _excelManager;
         private SaveManager _saveManager;
-        private List<string> _excelPathList;
         private List<SLGFile> _fileList;
         private string _currentFileFullPath;
         private string _gameDataDirPath;
@@ -34,8 +33,6 @@ namespace SLG_ExcelToJson
             _fileList = new List<SLGFile>();
             _saveManager = new SaveManager();
             _excelManager = new ExcelManager();
-
-            _excelPathList = new List<string>();
 
             InitializeComponent();
             
@@ -111,11 +108,11 @@ namespace SLG_ExcelToJson
         private bool IsValid(out string errorMsg)
         {
             errorMsg = string.Empty;
-            if (_currentFileFullPath == null || File.Exists(_currentFileFullPath) == false)
-            {
-                errorMsg = $"{_currentFileFullPath} 변환할 파일이 없습니다.";
-                return false;
-            }
+            // if (_currentFileFullPath == null || File.Exists(_currentFileFullPath) == false)
+            // {
+            //     errorMsg = $"{_currentFileFullPath} 변환할 파일이 없습니다.";
+            //     return false;
+            // }
             
             return true;
         }
@@ -130,6 +127,19 @@ namespace SLG_ExcelToJson
 
         private void OnClickConvert(object sender, EventArgs e)
         {
+            _excelManager.Init(_gameDataDirPath);
+            var dataFilePathList = _excelManager.GetTargetExcelFiles();
+            if (dataFilePathList.Count == 0)
+            {
+                MessageBox.Show("변환할 파일이 없습니다",
+                                "Error",
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Information, 
+                                MessageBoxDefaultButton.Button2);
+                BtnSysLog.Text = "변환 준비중...";
+                return;
+            }
+            
             var isValid = IsValid(out var errorMsg);
             if (isValid == false)
             {
@@ -140,8 +150,11 @@ namespace SLG_ExcelToJson
             }
             try
             {
-                _excelManager.Init(_gameDataDirPath);
-                _excelManager.ProcessSingleFile(_currentFileFullPath);
+                foreach (var dataFilePath in dataFilePathList)
+                {
+                    _excelManager.ProcessSingleFile(dataFilePath);
+                }
+                // _excelManager.ProcessSingleFile(_currentFileFullPath);
                 
                 _saveManager.Init(_saveTargetDirectory);
                 _saveManager.Save(_excelManager.GetInfoList(), true);
