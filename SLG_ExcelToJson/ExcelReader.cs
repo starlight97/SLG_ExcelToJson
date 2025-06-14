@@ -13,12 +13,11 @@ namespace SLG_ExcelToJson
         public static Sheets ExcelSheets;
         public static Worksheet ExcelSheet;
 
-        public static List<ExcelSheetInfo> InfoList { get; set; }
+        public static List<ExcelSheetInfo> InfoList => _infoList;
+        private static List<ExcelSheetInfo> _infoList = new List<ExcelSheetInfo>(); 
 
         public static void Init()
         {
-            InfoList = new List<ExcelSheetInfo>();
-
             ExcelApp = new Application();
             ExcelBooks = ExcelApp.Workbooks;
         }
@@ -31,8 +30,8 @@ namespace SLG_ExcelToJson
             //파일 입력 받을때마다 Sheet 개별을 가져옴
             for (int i = 1; i <= ExcelSheets.Count; i++)
             {
-                ExcelSheetInfo info = new ExcelSheetInfo();
-                InfoList.Add(info);
+                var info = new ExcelSheetInfo();
+                _infoList.Add(info);
 
                 try
                 {
@@ -62,15 +61,15 @@ namespace SLG_ExcelToJson
         public static List<List<List<dynamic>>> GetAllSheetValues()
         {
             var rtnList = new List<List<List<dynamic>>>();
-            for (int i = 0; i < InfoList.Count; i++)
-                rtnList.Add(InfoList[i].GetSheetValues());
+            for (int i = 0; i < _infoList.Count; i++)
+                rtnList.Add(_infoList[i].GetSheetValues());
 
             return rtnList;
         }
 
         public static List<List<dynamic>> GetSheetValuesByIndex(int index)
         {
-            return InfoList[index].GetSheetValues();
+            return _infoList[index].GetSheetValues();
         }
 
         public static void Free()
@@ -79,11 +78,11 @@ namespace SLG_ExcelToJson
             ExcelApp.DisplayAlerts = false;
             ExcelApp.Quit();
 
-            foreach (var info in InfoList)
+            foreach (var info in _infoList)
             {
                 info.Free();
             }
-            InfoList.Clear();
+            _infoList.Clear();
             Marshal.ReleaseComObject(ExcelSheets);
             Marshal.ReleaseComObject(ExcelBook);
             Marshal.ReleaseComObject(ExcelBooks);

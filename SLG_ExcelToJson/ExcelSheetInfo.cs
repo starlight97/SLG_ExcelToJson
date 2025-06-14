@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 
@@ -10,12 +7,12 @@ namespace SLG_ExcelToJson
 {
     public class ExcelSheetInfo
     {
-        public List<string> DataNames { get { return this.dataNames; } }
-        public List<TypeCode> DataTypeCodes { get { return this.dataTypeCodes; } }
-        public List<string> DataTypeNames { get { return this.dataTypeNames; } }
-        public List<List<dynamic>> DataValues { get { return this.dataValues; } }
-        public Range UsedRange { get { return this.usedRange; } }
-        
+        public List<string> DataNames => this.dataNames;
+        public List<TypeCode> DataTypeCodes => this.dataTypeCodes;
+        public List<string> DataTypeNames => this.dataTypeNames;
+        public List<List<dynamic>> DataValues => this.dataValues;
+        public Range UsedRange => this.usedRange;
+
         public Worksheet ExcelSheet
         {
             get { return this.excelSheet; }
@@ -65,13 +62,6 @@ namespace SLG_ExcelToJson
                 //밸류들 자동으로 뽑아줌.
                 dataValues = this.GetSheetValues();
             }
-        }
-
-        public ExcelSheetInfo()
-        {
-            this.dataNames = new List<string>();
-            this.dataTypeCodes = new List<TypeCode>();
-            this.dataTypeNames = new List<string>();
         }
         
         private Range usedRange;
@@ -125,18 +115,18 @@ namespace SLG_ExcelToJson
 
         public void PrintDataTypes()
         {
-            for (int i = 0; i < this.dataTypeCodes.Count; i++)
+            for (int i = 0; i < dataTypeCodes.Count; i++)
             {
-                Console.WriteLine(this.ExcelSheet.Name);
+                Console.WriteLine(ExcelSheet.Name);
                 Console.WriteLine("{0}, {1}, {2}",
-                    this.dataNames[i], this.dataTypeNames[i], this.dataTypeCodes[i]);
+                    dataNames[i], dataTypeNames[i], dataTypeCodes[i]);
             }
         }
 
         public void Free()
         {
-            Marshal.ReleaseComObject(this.usedRange);
-            Marshal.ReleaseComObject(this.excelSheet);
+            Marshal.ReleaseComObject(usedRange);
+            Marshal.ReleaseComObject(excelSheet);
         }
     }
 }

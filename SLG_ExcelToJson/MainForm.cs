@@ -5,8 +5,6 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.IO;
-using Newtonsoft.Json.Linq;
-using System.Reflection;
 
 namespace SLG_ExcelToJson
 {
