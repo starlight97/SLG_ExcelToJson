@@ -33,13 +33,13 @@ namespace SLG_ExcelToJson
                     var jObj = new JObject();
 
                     // 데이터 타입 ex(int , string)
-                    jObj = ChangeToJObject(info.DataNames, info.DataTypeNames);
+                    jObj = ChangeToJObject(info.DataNameList, info.DataTypeNameList);
                     jArray.Add(jObj);
 
                     // 데이터 값 ex(1, "홍길동")
                     foreach (var values in info.DataValues)
                     {
-                        var jobj = ChangeToJObject(info.DataNames, values, info.DataTypeNames);
+                        var jobj = ChangeToJObject(info.DataNameList, values, info.DataTypeNameList);
                         if (jobj == null)
                         {
                             continue;
@@ -70,13 +70,13 @@ namespace SLG_ExcelToJson
                     var jObj = new JObject();
 
                     // 데이터 타입 ex(int , string)
-                    jObj = ChangeToJObject(info.DataNames, info.DataTypeNames);
+                    jObj = ChangeToJObject(info.DataNameList, info.DataTypeNameList);
                     jArray.Add(jObj);
 
                     // 데이터 값 ex(1, "홍길동")
                     foreach (var values in info.DataValues)
                     {
-                        var jobj = ChangeToJObject(info.DataNames, values, info.DataTypeNames);
+                        var jobj = ChangeToJObject(info.DataNameList, values, info.DataTypeNameList);
                         if (jobj != null)
                             jArray.Add(jobj);
                     }

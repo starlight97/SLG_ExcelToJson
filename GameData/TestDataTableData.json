@@ -1,0 +1,17 @@
+[
+  {
+    "id": "int",
+    "skill_grade": "Grade",
+    "mission_end_time": "int"
+  },
+  {
+    "id": 1001,
+    "skill_grade": "Common",
+    "mission_end_time": 100
+  },
+  {
+    "id": 1002,
+    "skill_grade": "Unique",
+    "mission_end_time": 300
+  }
+]

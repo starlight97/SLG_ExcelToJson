@@ -21,6 +21,23 @@ namespace SLG_ExcelToJson
             ExcelApp = new Application();
             ExcelBooks = ExcelApp.Workbooks;
         }
+        
+        public static void Clear()
+        {
+            //저장할지 물어보는거 취소.
+            ExcelApp.DisplayAlerts = false;
+            ExcelApp.Quit();
+
+            foreach (var info in _infoList)
+            {
+                info.Clear();
+            }
+            _infoList.Clear();
+            Marshal.ReleaseComObject(ExcelSheets);
+            Marshal.ReleaseComObject(ExcelBook);
+            Marshal.ReleaseComObject(ExcelBooks);
+            Marshal.ReleaseComObject(ExcelApp);
+        }
 
         public static void AddExcelFile(string filePath)
         {
@@ -31,27 +48,30 @@ namespace SLG_ExcelToJson
             for (int i = 1; i <= ExcelSheets.Count; i++)
             {
                 var sheetData = ExcelSheets.Item[i];
-                
                 try
                 {
                     var name = sheetData.Name;
-                    var skipData = name.StartsWith("_");
-                    if (skipData)
+                    var skipSheet = name.StartsWith("_");
+                    if (skipSheet)
                     {
                         continue;
                     }
-                    
+
+                    var excelSheet = ExcelSheets.Item[i];
                     var info = new ExcelSheetInfo();
-                    info.ExcelSheet = ExcelSheets.Item[i];
+                    info.ExcelSheet = excelSheet;
+                    info.RemoveUnUsedData();
                     _infoList.Add(info);
                 }
                 catch (Exception e)
                 {
-                    var msg = "Json Convert Error\r\n";
+                    var msg = $"Json Convert Error";
                     foreach (var dataName in sheetData.DataNames)
                     {
                         msg += dataName + "\r\n";
                     }
+
+                    msg += $"{e}\r\n";
                     
                     ErrorManager.instance.AddErrorLog(msg);
                     ErrorManager.instance.Show();
@@ -73,23 +93,6 @@ namespace SLG_ExcelToJson
         public static List<List<dynamic>> GetSheetValuesByIndex(int index)
         {
             return _infoList[index].GetSheetValues();
-        }
-
-        public static void Clear()
-        {
-            //저장할지 물어보는거 취소.
-            ExcelApp.DisplayAlerts = false;
-            ExcelApp.Quit();
-
-            foreach (var info in _infoList)
-            {
-                info.Clear();
-            }
-            _infoList.Clear();
-            Marshal.ReleaseComObject(ExcelSheets);
-            Marshal.ReleaseComObject(ExcelBook);
-            Marshal.ReleaseComObject(ExcelBooks);
-            Marshal.ReleaseComObject(ExcelApp);
         }
     }
 }
