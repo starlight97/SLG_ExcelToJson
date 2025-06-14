@@ -107,8 +107,6 @@ namespace SLG_ExcelToJson
             //    Directory.CreateDirectory(currentDirectory + "\\cs");
             //}
 
-            ErrorManager.instance.Init();
-
             //if (lbxExcelList.SelectedItems.Count < 1)
             //{
             //    MessageBox.Show("변환할 파일이 없습니다.", "아이고...", MessageBoxButtons.OK,
@@ -169,18 +167,13 @@ namespace SLG_ExcelToJson
             //    maker.AddField(ExcelReader.InfoList[i].DataNames, ExcelReader.InfoList[i].DataTypeCodes);
             //    maker.GenerateCSharpCode();
             //}
-
-
+            
+            ErrorManager.instance.Show();
             FileManagerList.Clear();
-            ExcelReader.Free();
-
-            if(ErrorManager.instance.ErrorLogs.Count > 0)
-            {
-                ErrorManager.instance.Show();
-            }
-
-            ResultTextBox.Text = "변환이 완료되었습니다!!!";
+            ExcelReader.Clear();
             Process.Start(_saveTargetDirectory);
+            ErrorManager.instance.Clear();
+            ResultTextBox.Text = "변환이 완료되었습니다!!!";
         }
         
         private void OnClickClose(object sender, EventArgs e)

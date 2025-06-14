@@ -110,21 +110,18 @@ namespace SLG_ExcelToJson
         public static dynamic GetValue(TypeCode typeCode, dynamic value)
         {
             if (typeCode == TypeCode.DateTime)
-                return ParseDateTime(value);
-
-            else
             {
-                try
-                {
-                    return Convert.ChangeType(value, typeCode);
-                }
-                catch (Exception e)
-                {
-                    ErrorManager.instance.AddErrorLog($"ERROR : {value} {typeCode}");
-                    return null;
-                }
+                return ParseDateTime(value);
+            }
 
-                
+            try
+            {
+                return Convert.ChangeType(value, typeCode);
+            }
+            catch (Exception e)
+            {
+                ErrorManager.instance.AddErrorLog($"ERROR : {value} {typeCode}");
+                return null;
             }
         }
 

@@ -10,23 +10,29 @@ namespace SLG_ExcelToJson
     public sealed class ErrorManager
     {
         public static readonly ErrorManager instance = new ErrorManager();
+        public int ErrorLogCount => _errorLogList.Count;
 
-        public List<string> ErrorLogs = new List<string>();
-
-        public void Init()
+        private List<string> _errorLogList = new List<string>();
+        
+        public void Clear()
         {
-            ErrorLogs.Clear();
+            _errorLogList.Clear();
         }
 
         public void AddErrorLog(string errorLog)
         {
-            ErrorLogs.Add(errorLog);
+            _errorLogList.Add(errorLog);
         }
 
         public void Show()
         {
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach (var errorlog in ErrorLogs)
+            if (_errorLogList.Count == 0)
+            {
+                return;
+            }
+            
+            var stringBuilder = new StringBuilder();
+            foreach (var errorlog in _errorLogList)
             {
                 stringBuilder.AppendLine(errorlog);
             }

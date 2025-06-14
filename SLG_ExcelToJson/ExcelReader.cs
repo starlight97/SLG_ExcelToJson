@@ -72,7 +72,7 @@ namespace SLG_ExcelToJson
             return _infoList[index].GetSheetValues();
         }
 
-        public static void Free()
+        public static void Clear()
         {
             //저장할지 물어보는거 취소.
             ExcelApp.DisplayAlerts = false;
