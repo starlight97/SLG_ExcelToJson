@@ -78,8 +78,9 @@
     <Compile Include="ErrorManager.cs" />
     <Compile Include="ClassMaker.cs" />
     <Compile Include="DataTypeChanger.cs" />
-    <Compile Include="ExcelReader.cs" />
-    <Compile Include="ExcelSheetInfo.cs" />
+    <Compile Include="Excel\ExcelManager.cs" />
+    <Compile Include="Excel\ExcelReader2.cs" />
+    <Compile Include="Excel\ExcelSheetInfo2.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="JsonChanger.cs" />
     <Compile Include="MainForm.cs">

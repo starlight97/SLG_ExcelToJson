@@ -18,7 +18,7 @@ namespace SLG_ExcelToJson
         {
             _saveTargetDirectory = saveTargetDirectory;
         }
-        public void Save(List<ExcelSheetInfo> infoList , bool isMulti)
+        public void Save(List<ExcelSheetInfo2> infoList , bool isMulti)
         {
             if (isMulti)
             {

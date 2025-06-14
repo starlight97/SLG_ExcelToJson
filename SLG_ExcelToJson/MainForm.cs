@@ -12,7 +12,7 @@ namespace SLG_ExcelToJson
     {
         public List<FileManager> FileManagerList;
 
-
+        private ExcelManager _excelManager;
         private SaveManager _saveManager;
         private List<string> _excelPathList;
         private string _currentFileFullPath;
@@ -24,6 +24,7 @@ namespace SLG_ExcelToJson
         {
             FileManagerList = new List<FileManager>();
             _saveManager = new SaveManager();
+            _excelManager = new ExcelManager();
 
             _excelPathList = new List<string>();
 
@@ -42,23 +43,23 @@ namespace SLG_ExcelToJson
             if (_useAutoSet)
             {
                 // 현재 프로그램 실행 경로
-                string currentPath = Directory.GetCurrentDirectory();
-                string gameDataPath = Path.GetFullPath(Path.Combine(currentPath, @"..\..\..\GameData\GameStaticData.xlsx"));
-                string jsonExportPath = Path.GetFullPath(Path.Combine(currentPath, @"..\..\Assets\Resources\Datas"));
+                var currentPath = Directory.GetCurrentDirectory();
+                var gameDataPath = Path.GetFullPath(Path.Combine(currentPath, @"..\..\..\GameData\GameStaticData.xlsx"));
+                var jsonExportPath = Path.GetFullPath(Path.Combine(currentPath, @"..\..\Assets\Resources\Datas"));
                 
                 _currentFileFullPath = Path.GetFullPath(gameDataPath);
                 _saveTargetDirectory = Path.GetFullPath(jsonExportPath); 
             }
             else
             {
-                string fileName = "settings.txt";
+                var fileName = "settings.txt";
                 // 파일이 존재하는지 확인
                 if (!File.Exists(fileName))
                 {
                     // 파일이 없는 경우에는 새로운 파일을 생성
                     CreateSettingsFile(fileName);
                 }
-                string[] settingValue = File.ReadAllLines("settings.txt");
+                var settingValue = File.ReadAllLines("settings.txt");
 
 
                 for (int index = 0; index < settingValue.Count(); index++)
@@ -130,11 +131,11 @@ namespace SLG_ExcelToJson
             //}
             
 
-            ExcelReader.Init();
-            ExcelReader.AddExcelFile(_currentFileFullPath);
+            ExcelReader2.Init();
+            ExcelReader2.AddExcelFile(_currentFileFullPath);
             
             _saveManager.Init(_saveTargetDirectory);
-            _saveManager.Save(ExcelReader.InfoList, true);
+            _saveManager.Save(ExcelReader2.InfoList, true);
             // var dataDic = new Dictionary<string, JArray>();
             // foreach (var info in ExcelReader.InfoList)
             // {
@@ -174,7 +175,7 @@ namespace SLG_ExcelToJson
             
             ErrorManager.instance.Show();
             FileManagerList.Clear();
-            ExcelReader.Clear();
+            ExcelReader2.Clear();
             Process.Start(_saveTargetDirectory);
             ErrorManager.instance.Clear();
             ResultTextBox.Text = "변환이 완료되었습니다!!!";

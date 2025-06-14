@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace SLG_ExcelToJson
 {
-    public class ExcelSheetInfo
+    public class ExcelSheetInfo2
     {
         public List<string> DataNames => this.dataNames;
         public List<TypeCode> DataTypeCodes => this.dataTypeCodes;
@@ -123,7 +123,7 @@ namespace SLG_ExcelToJson
             }
         }
 
-        public void Free()
+        public void Clear()
         {
             Marshal.ReleaseComObject(usedRange);
             Marshal.ReleaseComObject(excelSheet);

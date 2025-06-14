@@ -5,7 +5,7 @@ using System;
 
 namespace SLG_ExcelToJson
 {
-    public static class ExcelReader
+    public static class ExcelReader2
     {
         public static Application ExcelApp;
         public static Workbooks ExcelBooks;
@@ -13,8 +13,8 @@ namespace SLG_ExcelToJson
         public static Sheets ExcelSheets;
         public static Worksheet ExcelSheet;
 
-        public static List<ExcelSheetInfo> InfoList => _infoList;
-        private static List<ExcelSheetInfo> _infoList = new List<ExcelSheetInfo>(); 
+        public static List<ExcelSheetInfo2> InfoList => _infoList;
+        private static List<ExcelSheetInfo2> _infoList = new List<ExcelSheetInfo2>(); 
 
         public static void Init()
         {
@@ -30,7 +30,7 @@ namespace SLG_ExcelToJson
             //파일 입력 받을때마다 Sheet 개별을 가져옴
             for (int i = 1; i <= ExcelSheets.Count; i++)
             {
-                var info = new ExcelSheetInfo();
+                var info = new ExcelSheetInfo2();
                 _infoList.Add(info);
 
                 try
@@ -80,7 +80,7 @@ namespace SLG_ExcelToJson
 
             foreach (var info in _infoList)
             {
-                info.Free();
+                info.Clear();
             }
             _infoList.Clear();
             Marshal.ReleaseComObject(ExcelSheets);
