@@ -157,9 +157,13 @@ namespace SLG_ExcelToJson
                 }
                 
                 _saveManager.Init(_saveTargetDirectory);
-                _saveManager.Save(_excelManager.GetInfoList(), true);
+                var infoList = _excelManager.GetInfoList();
+                var success = _saveManager.Save(infoList, true);
+                if (success == false)
+                {
+                    throw new Exception("저장 실패");
+                }
                 
-                ErrorManager.instance.Show();
                 _fileList.Clear();
                 
                 Process.Start(_saveTargetDirectory);
@@ -173,6 +177,7 @@ namespace SLG_ExcelToJson
             }
             finally
             {
+                ErrorManager.instance.Show();
                 _excelManager.Clear();
             }
         }

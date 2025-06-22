@@ -7,6 +7,7 @@ namespace SLG_ExcelToJson
 {
     public class ExcelSheetInfo
     {
+        public string FileName => excelSheet?.Parent?.Name ?? "Unknown";
         public List<string> DataNameList => _dataNameList;
         public List<TypeCode> DataTypeCodeList => _dataTypeCodeList;
         public List<string> DataTypeNameList => _dataTypeNameList;
